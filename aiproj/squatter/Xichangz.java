@@ -22,7 +22,15 @@ public class Xichangz implements Player, Piece {
 	@Override
 	public Move makeMove() {
 		// TODO Auto-generated method stub
-		return null;
+		Move move = new Move();
+		
+		move.P=role;
+		
+		moveAlgo(move);
+		
+		board.updateBoard(move);
+
+		return move;
 	}
 
 	@Override
@@ -40,6 +48,11 @@ public class Xichangz implements Player, Piece {
 	@Override
 	public void printBoard(PrintStream output) {
 		// TODO Auto-generated method stub
+		
+	}
+	
+	public void moveAlgo(Move move) {
+		
 		
 	}
 

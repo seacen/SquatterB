@@ -50,5 +50,29 @@ public class Board implements Piece{
 		
 	}
 	
+	public boolean updateBoard(Move move) {
+		
+		int row=move.Row, column=move.Col;
+		
+		if ((row>=dimension) || (column>=dimension)) {
+			return false;
+		}
+		
+		int cell=board[row][column];
+		
+		if (cell!=EMPTY) {
+			return false;
+		}
+		board[row][column]=move.P;
+		
+		checkLoop(board,move);
+		
+		return true;
+	}
+	
+	public void checkLoop(int[][] board, Move move) {
+		
+	}
+	
 
 }
