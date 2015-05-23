@@ -1,3 +1,4 @@
+package aiproj.squatter;
 /*
 * name: Xichang Zhao
 * login_id: xichangz
