@@ -50,5 +50,22 @@ public class Board implements Piece{
 		
 	}
 	
+	public boolean updateBoard(Move move) {
+		int cell=board[move.Row][move.Col];
+		
+		if (cell!='+') {
+			return false;
+		}
+		board[move.Row][move.Col]=move.P;
+		
+		checkLoop(board,move);
+		
+		return true;
+	}
+	
+	public void checkLoop(int[][] board, Move move) {
+		
+	}
+	
 
 }

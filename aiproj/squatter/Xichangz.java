@@ -22,6 +22,9 @@ public class Xichangz implements Player, Piece {
 	@Override
 	public Move makeMove() {
 		// TODO Auto-generated method stub
+		Move move;
+		board.updateBoard(move);
+		
 		return null;
 	}
 
