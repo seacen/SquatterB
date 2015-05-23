@@ -7,12 +7,8 @@ package aiproj.squatter;
  *   
  */
 
-public interface CellStatus {
-    public static final int WHITE = 1, 
-                            BLACK = 2,
-                            CAPWHITE = 3,
+public interface CellStatus extends Piece {
+    public static final int CAPWHITE = 3,
                             CAPBLACK = 4,
-                            CAPEMPTY = 5,
-                            EMPTY = 0,
-    		                INVALID = -1;
+                            CAPEMPTY = 5;
 }
