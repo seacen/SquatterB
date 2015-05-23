@@ -3,7 +3,7 @@ package aiproj.squatter;
 /**
  * Created by hexin on 23/05/15.
  */
-public class BoardCell implements Piece {
+public class Cell implements Piece {
     private int val;
     private int row, col;
     private boolean checked;
@@ -32,11 +32,17 @@ public class BoardCell implements Piece {
         this.checked = checked;
     }
 
-    public BoardCell(int row, int col) {
+    public Cell(int row, int col) {
         this.row = row;
         this.col = col;
         this.val = EMPTY;
         this.checked = false;
+    }
+    
+    public Cell(int row, int col, int val) {
+        this.row = row;
+        this.col = col;
+        this.val = val;
     }
 
     @Override
