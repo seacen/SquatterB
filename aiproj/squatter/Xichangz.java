@@ -1,8 +1,5 @@
+package aiproj.squatter;
 import java.io.PrintStream;
-
-import aiproj.squatter.Move;
-import aiproj.squatter.Piece;
-import aiproj.squatter.Player;
 
 
 
