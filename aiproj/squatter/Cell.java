@@ -43,6 +43,7 @@ public class Cell implements Piece {
         this.row = row;
         this.col = col;
         this.val = val;
+        this.checked = false;
     }
 
     @Override
