@@ -45,6 +45,18 @@ public class Cell implements CellStatus {
         this.val = val;
         this.checked = false;
     }
+
+    /* Return true if the cell has a piece with the provided color. */
+    public boolean matchColor(int color) {
+        if (val == color) {
+            return true;
+        }
+        else if ((val == WHITE && color == CAPWHITE) || (val == BLACK && color == CAPBLACK) ||
+                (val == EMPTY && color == CAPEMPTY)) {
+            return true;
+        }
+        return false;
+    }
     
 
     @Override
