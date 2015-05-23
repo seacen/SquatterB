@@ -3,7 +3,7 @@ package aiproj.squatter;
 /**
  * Created by hexin on 23/05/15.
  */
-public class Cell implements Piece {
+public class Cell implements CellStatus {
     private int val;
     private int row, col;
     private boolean checked;
@@ -45,14 +45,16 @@ public class Cell implements Piece {
         this.val = val;
         this.checked = false;
     }
+    
 
     @Override
     public String toString() {
-        return "BoardCell{" +
+        return "Cell{" +
                 "val=" + val +
                 ", row=" + row +
                 ", col=" + col +
                 ", checked=" + checked +
                 '}';
     }
+    
 }

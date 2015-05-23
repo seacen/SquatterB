@@ -7,10 +7,12 @@ package aiproj.squatter;
  *   
  */
 
-public interface Piece {
+public interface CellStatus {
     public static final int WHITE = 1, 
                             BLACK = 2,
-                            DEAD = 3,
+                            CAPWHITE = 3,
+                            CAPBLACK = 4,
+                            CAPEMPTY = 5,
                             EMPTY = 0,
     		                INVALID = -1;
 }
