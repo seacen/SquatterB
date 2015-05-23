@@ -10,10 +10,15 @@ import aiproj.squatter.Player;
  * Created by hexin on 5/05/15.
  */
 public class Xichangz implements Player, Piece {
-
+	
+	private int role=INVALID;
+	private Board board;
+	
 	@Override
 	public int init(int n, int p) {
 		// TODO Auto-generated method stub
+		role=p;
+		board= new Board(n);
 		return 0;
 	}
 
