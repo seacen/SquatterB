@@ -5,17 +5,17 @@ import java.io.IOException;
 
 public class Board implements Piece{
 	
-	private int[][] board;
+	private Cell[][] board;
 	private int dimension;
 	
 	public Board(int n) {
 		// standard board initialization
 		dimension=n;
-		board=new int[dimension][dimension];
+		board=new Cell[dimension][dimension];
 		
 		for (int i=0;i<dimension;i++) {
 			for (int x=0;x<n;x++) {
-				board[i][x]=EMPTY;
+				board[i][x]=new Cell(i,x);
 			}
 		}
 	}
@@ -25,7 +25,7 @@ public class Board implements Piece{
 		// test version board initialization from stdin
 		
 		dimension = Integer.parseInt(input.readLine());
-		board=new int[dimension][dimension];
+		board=new Cell[dimension][dimension];
 		
 		String line;
 		
@@ -34,16 +34,16 @@ public class Board implements Piece{
 			for (int x=0;x<dimension;x++) {
 				char c=line.charAt(x*2);
 				if (c=='-') {
-					board[i][x]=DEAD;
+					board[i][x]=new Cell(i,x,DEAD);
 				}
 				else if (c=='+') {
-					board[i][x]=EMPTY;
+					board[i][x]=new Cell(i,x,EMPTY);
 				}
 				else if (c=='B') {
-					board[i][x]=BLACK;
+					board[i][x]=new Cell(i,x,BLACK);
 				}
 				else {
-					board[i][x]=WHITE;
+					board[i][x]=new Cell(i,x,WHITE);
 				}
 			}
 		}
@@ -58,19 +58,19 @@ public class Board implements Piece{
 			return false;
 		}
 		
-		int cell=board[row][column];
+		Cell cell=board[row][column];
 		
-		if (cell!=EMPTY) {
+		if (cell.getVal()!=EMPTY) {
 			return false;
 		}
-		board[row][column]=move.P;
+		board[row][column].setVal(move.P);
 		
 		checkLoop(board,move);
 		
 		return true;
 	}
 	
-	public void checkLoop(int[][] board, Move move) {
+	public void checkLoop(Cell[][] board, Move move) {
 		
 	}
 	
