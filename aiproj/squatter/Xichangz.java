@@ -8,9 +8,9 @@ import java.util.Random;
 /**
  * Created by hexin on 5/05/15.
  */
-public class Xichangz implements Player, Piece {
+public class Xichangz implements Player, CellStatus {
 	
-	private int role=INVALID;
+	private int role;
 	private Board board;
 	
 	@Override

@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 
-public class Board implements Piece{
+public class Board implements CellStatus{
 	
 	private Cell[][] board;
 	private int dimension;
@@ -38,7 +38,13 @@ public class Board implements Piece{
 			for (int x=0;x<dimension;x++) {
 				char c=line.charAt(x*2);
 				if (c=='-') {
-					board[i][x]=new Cell(i,x,DEAD);
+					board[i][x]=new Cell(i,x,CAPEMPTY);
+				}
+				else if (c=='b') {
+					board[i][x]=new Cell(i,x,CAPBLACK);
+				}
+				else if (c=='w') {
+					board[i][x]=new Cell(i,x,CAPWHITE);
 				}
 				else if (c=='+') {
 					board[i][x]=new Cell(i,x,EMPTY);
