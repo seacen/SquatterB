@@ -1,5 +1,7 @@
 package aiproj.squatter;
 import java.io.PrintStream;
+import java.util.ArrayList;
+import java.util.Random;
 
 
 
@@ -53,7 +55,26 @@ public class Xichangz implements Player, Piece {
 	
 	public void moveAlgo(Move move) {
 		
+		ArrayList<Cell> freeCells=board.getFreeCells();
 		
+		int max=freeCells.size();
+		int min=0;
+		
+		Cell cellToUpdate=freeCells.get(randInt(min,max));
+		
+		move.Row=cellToUpdate.getRow();
+		move.Col=cellToUpdate.getCol();
+		
+	}
+	
+	public static int randInt(int min, int max) {
+		// Attribute to Greg Case from stack overflow
+		
+	    Random rand = new Random();
+
+	    int randomNum = rand.nextInt(max - min) + min;
+
+	    return randomNum;
 	}
 
 }

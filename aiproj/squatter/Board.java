@@ -1,21 +1,25 @@
 package aiproj.squatter;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.ArrayList;
 
 
 public class Board implements Piece{
 	
 	private Cell[][] board;
 	private int dimension;
+	private ArrayList<Cell> freeCells;
 	
 	public Board(int n) {
 		// standard board initialization
 		dimension=n;
 		board=new Cell[dimension][dimension];
+		freeCells= new ArrayList<Cell>(dimension*dimension);
 		
 		for (int i=0;i<dimension;i++) {
 			for (int x=0;x<n;x++) {
 				board[i][x]=new Cell(i,x);
+				freeCells.add(board[i][x]);
 			}
 		}
 	}
@@ -64,6 +68,7 @@ public class Board implements Piece{
 			return false;
 		}
 		board[row][column].setVal(move.P);
+		freeCells.remove(cell);
 		
 		checkLoop(board,move);
 		
@@ -73,6 +78,10 @@ public class Board implements Piece{
 	public void checkLoop(Cell[][] board, Move move) {
 		
 	}
-	
 
+	public ArrayList<Cell> getFreeCells() {
+		return freeCells;
+	}
+	
+	
 }
