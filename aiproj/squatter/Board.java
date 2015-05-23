@@ -2,8 +2,7 @@ package aiproj.squatter;
 import java.io.BufferedReader;
 import java.io.IOException;
 
-
-public class Board implements Piece{
+public class Board {
 	
 	private Cell[][] board;
 	private int dimension;
@@ -65,14 +64,32 @@ public class Board implements Piece{
 		}
 		board[row][column].setVal(move.P);
 		
-		checkLoop(board,move);
+//		checkLoop(move);
 		
 		return true;
 	}
-	
-	public void checkLoop(Cell[][] board, Move move) {
-		
-	}
-	
+
+    /* Check if there is any loop formed by the move made, and update the board accordingly */
+    public void checkLoop(Move move) {
+
+    }
+
+//    private boolean emptySurround(int row, int col) {
+//
+//    }
+
+    private Cell[] surroundCells(Cell cell) {
+        int index[] = {-1, 0 ,1};
+        
+    }
+
+    private boolean isValidCell(Cell cell) {
+        if (cell.getRow() < dimension && cell.getRow() >= 0 && cell.getCol() < dimension && cell.getCol() >= 0) {
+            return true;
+        }
+        return false;
+    }
+
+
 
 }
