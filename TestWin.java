@@ -1,4 +1,3 @@
-package aiproj.squatter;
 /*
 * name: Xichang Zhao
 * login_id: xichangz
@@ -10,7 +9,7 @@ package aiproj.squatter;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-
+import aiproj.squatter.*;
 
 /**
  * Test if a player has won and count number of captured cells for each player for a given input
