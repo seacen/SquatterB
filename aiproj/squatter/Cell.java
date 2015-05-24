@@ -57,7 +57,12 @@ public class Cell implements CellStatus {
         }
         return false;
     }
-    
+
+    public void setCaptured() {
+        if (val == WHITE) val = CAPWHITE;
+        else if (val == BLACK) val = CAPBLACK;
+        else if (val == EMPTY) val = CAPEMPTY;
+    }
 
     @Override
     public String toString() {

@@ -76,7 +76,7 @@ public class Board implements CellStatus{
 		board[row][column].setVal(move.P);
 		freeCells.remove(cell);
 		
-//		checkLoop(move);
+		checkLoop(move);
 		
 		return true;
 	}
@@ -85,13 +85,18 @@ public class Board implements CellStatus{
      * Return false if no loop is found, true otherwise. */
     public boolean checkLoop(Move move) {
         List<Cell> adjCells = adjacentCells(move.Row, move.Col);
+        boolean loopFound = false;
+
         if (numEmptyCells(adjCells) < 2) {
             return false;
         }
 
         for (Cell c : adjCells) {
-//            floodFill(c, move.P); remember to check the condition for exploring cell.
+            if (floodFill(c, move.P)) loopFound = true;
         }
+
+        uncheckAll();
+        return loopFound;
     }
 
     /* Explore the specified cell using flood fill method.
@@ -104,32 +109,42 @@ public class Board implements CellStatus{
         // They will all be marked as captured if all cells are explored and none of them is a border cell.
         List<Cell> innerCells = new ArrayList<Cell>();
         List<Cell> exploring = new ArrayList<Cell>();
-        exploring.add(c);
+
+        // Cell of its own color is not captured.
+        if (!c.matchColor(loopColor)) exploring.add(c);
+
         while (!exploring.isEmpty()) {
             Cell current = exploring.remove(0);
-            current.setChecked(true);
-
-            if (isBorderCell(current)) {
-                return false;
-            }
-
-            List<Cell> adjCells = new ArrayList<Cell>();
-            adjCells = adjacentCells(c.getRow(), c.getCol());
-
-            for (Cell adjCell : adjCells) {
-                if (!adjCell.matchColor(loopColor)) {
-                    exploring.add(adjCell);
-                }
-            }
+            if (!exploreCell(current, loopColor, innerCells, exploring)) return false;
         }
 
+        for (Cell captured : innerCells) {
+            captured.setCaptured();
+        }
+
+        return true;
     }
 
     /* Explore the specified cell.
      * Add its adjacent non-loop cells to exploringList.
      * Return false if it is a border cell. */
-    private boolean exploreCell(cell c, int loopColor, List<Cell> innerCellsList, List<Cell> exploringList) {
+    private boolean exploreCell(Cell current, int loopColor, List<Cell> innerCellsList, List<Cell> exploringList) {
+        if (exploringList.contains(current)) exploringList.remove(current);
+        current.setChecked(true);
 
+        if (isBorderCell(current)) {
+            return false;
+        }
+
+        List<Cell> adjCells = new ArrayList<Cell>();
+        adjCells = adjacentCells(current.getRow(), current.getCol());
+
+        for (Cell adjCell : adjCells) {
+            if (!adjCell.matchColor(loopColor)) exploringList.add(adjCell);
+        }
+
+        innerCellsList.add(current);
+        return true;
     }
 
     private boolean isBorderCell(Cell c) {
@@ -151,7 +166,7 @@ public class Board implements CellStatus{
     private int numEmptyCells(List<Cell> cells) {
         int num = 0;
         for (Cell c : cells) {
-            if (c.val == EMPTY) {
+            if (c.getVal() == EMPTY) {
                 num++;
             }
         }
