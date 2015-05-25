@@ -112,7 +112,7 @@ public class Board implements CellStatus{
 		
 		updateCell(row, column, move.P);
 		
-		checkLoop(move);
+		System.out.println("\nNumber of cells captured: " + checkLoop(move.Row, move.Col, move.P, true));
 		
 		winner=checkWinner();
 		
@@ -192,28 +192,32 @@ public class Board implements CellStatus{
 	}
 
     /* Check if there is any loop formed by the move made, and update the board accordingly.
-     * Return false if no loop is found, true otherwise. */
-    public boolean checkLoop(Move move) {
-        List<Cell> adjCells = crossAdjCells(move.Row, move.Col);
+     * Cells will be changed when overwrite is set to be true.
+     * targetColor can be BLACK or WHITE. It is the loop color.
+     * Return the number of captured cells found, 0 if none. */
+    public int checkLoop(int row, int col, int targetColor, Boolean overwrite) {
+        List<Cell> adjCells = crossAdjCells(row, col);
+        int totalCaptured = 0;
         boolean loopFound = false;
 
-        if (numMatchingCells(adjacentCells(move.Row, move.Col), move.P) < 2) {
-            return false;
+        if (numMatchingCells(adjacentCells(row, col), targetColor) < 2) {
+            return 0;
         }
 
         for (Cell c : adjCells) {
-            if (floodFill(c, move.P)) loopFound = true;
+            totalCaptured += floodFill(c, targetColor, overwrite);
         }
 
         uncheckAll();
-        return loopFound;
+        return totalCaptured;
     }
 
     /* Explore the specified cell using flood fill method.
      * Mark a cell as checked if its status has already been determined.
      * If it is captured, mark all cells in its capture cells as captured, and return true.
-     * If it is not captured, return false. */
-    private boolean floodFill(Cell c, int loopColor) {
+     * Captured cells will be updated when overwrite is set to be true
+     * Return the number of captured cells, 0 if none. */
+    private int floodFill(Cell c, int loopColor, Boolean overwrite) {
         // All cells in the below two lists are not of loopColor.
         // Every non-loopColor cell will be explored
         // They will all be marked as captured if all cells are explored and none of them is a border cell.
@@ -222,24 +226,27 @@ public class Board implements CellStatus{
         List<Cell> exploring = new ArrayList<Cell>();
 
         // Cell of its own color is not captured.
-        if (c.matchColor(loopColor)) return false;
+        if (c.matchColor(loopColor)) return 0;
 
         exploring.add(c);
 
         while (!exploring.isEmpty()) {
             Cell current = exploring.remove(0);
-            if (!exploreCell(current, loopColor, capturedList, exploring, brotherList)) return false;
+            if (!exploreCell(current, loopColor, capturedList, exploring, brotherList)) return 0;
         }
 
-        for (Cell captured : capturedList) {
-            captured.setCaptured();
+        if (overwrite) {
+            for (Cell captured : capturedList) {
+                if (captured.isEmpty()) freeCells.remove(captured);
+                captured.setCaptured();
+            }
+
+            for (Cell brother : brotherList) {
+                brother.setFreed();
+            }
         }
 
-        for (Cell brother : brotherList) {
-            brother.setFreed();
-        }
-
-        return capturedList.isEmpty() ? false : true;
+        return capturedList.size();
     }
 
     /* Explore the specified cell.
