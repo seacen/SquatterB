@@ -24,6 +24,10 @@ public class Xichangz implements Player, CellStatus {
 		return board;
 	}
 	
+	public int getOppoRole() {
+		return oppoRole;
+	}
+
 	/**
 	 * initialize player in standard approach
 	 * @param n	board dimension
@@ -66,11 +70,11 @@ public class Xichangz implements Player, CellStatus {
 	 */
 	public Move makeMove() {
 		// TODO Auto-generated method stub
-		Move move = new Move();
+		Move move;
 		
-		move.P=role;
+		Intelligence intelligence = new RandomAlgorithm(this,board);
 		
-		randomMoveAlgo(move);
+		move=intelligence.makeMove();
 		
 		board.updateBoard(move);
 
@@ -127,53 +131,4 @@ public class Xichangz implements Player, CellStatus {
 		}
 		
 	}
-	
-	/**
-	 * an moving algorithm for determining row,column values of a move to make 
-	 */
-	public void randomMoveAlgo(Move move) {
-		
-		ArrayList<Cell> freeCells=board.getFreeCells();
-		
-		int max=freeCells.size();
-		int min=0;
-		
-		Cell cellToUpdate=freeCells.get(randInt(min,max));
-		
-		move.Row=cellToUpdate.getRow();
-		move.Col=cellToUpdate.getCol();
-		
-	}
-	
-	/**
-	 * generate a random number within range min,max
-	 * @param min
-	 * @param max
-	 * @return integer generated
-	 */
-	public static int randInt(int min, int max) {
-		// Attribute to Greg Case from stack overflow
-		
-	    Random rand = new Random();
-
-	    int randomNum = rand.nextInt(max - min) + min;
-
-	    return randomNum;
-	}
-	
-	public void moveAlgo(Move move) {
-		
-		ArrayList<Cell> freeCells=board.getFreeCells();
-		
-		for (Cell cell : freeCells) {
-			if (isSymmetry(cell)) {
-				continue;
-			}
-		}
-	}
-	
-	private boolean isSymmetry(Cell cell) {
-		return false;
-	}
-
 }

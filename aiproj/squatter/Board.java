@@ -112,7 +112,7 @@ public class Board implements CellStatus{
 		
 		updateCell(row, column, move.P);
 		
-		System.out.println("\nNumber of cells captured: " + checkLoop(move.Row, move.Col, move.P, true));
+		checkLoop(move.Row, move.Col, move.P);
 		
 		winner=checkWinner();
 		
@@ -124,6 +124,27 @@ public class Board implements CellStatus{
 		if (freeCells.size()!=0) {
 			return EMPTY;
 		}
+		
+		int blackCaptured, whiteCaptured;
+		int[] capturedCounts = new int[2];
+		
+		calculateCaptured(capturedCounts);
+		
+		blackCaptured=capturedCounts[0];
+		whiteCaptured=capturedCounts[1];
+		
+		if (blackCaptured>whiteCaptured) {
+			return BLACK;
+		}
+		else if (blackCaptured<whiteCaptured) {
+			return WHITE;
+		}
+		else {
+			return DEAD;
+		}
+	}
+	
+	public void calculateCaptured(int[] capturedCounts) {
 		
 		int blackCaptured=0, whiteCaptured=0;
 		
@@ -146,15 +167,8 @@ public class Board implements CellStatus{
 			}
 		}
 		
-		if (blackCaptured>whiteCaptured) {
-			return BLACK;
-		}
-		else if (blackCaptured<whiteCaptured) {
-			return WHITE;
-		}
-		else {
-			return DEAD;
-		}
+		capturedCounts[0]=blackCaptured;
+		capturedCounts[1]=whiteCaptured;
 	}
 	
 	/**
@@ -192,10 +206,9 @@ public class Board implements CellStatus{
 	}
 
     /* Check if there is any loop formed by the move made, and update the board accordingly.
-     * Cells will be changed when overwrite is set to be true.
      * targetColor can be BLACK or WHITE. It is the loop color.
      * Return the number of captured cells found, 0 if none. */
-    public int checkLoop(int row, int col, int targetColor, Boolean overwrite) {
+    public int checkLoop(int row, int col, int targetColor) {
         List<Cell> adjCells = crossAdjCells(row, col);
         int totalCaptured = 0;
 
@@ -204,7 +217,7 @@ public class Board implements CellStatus{
         }
 
         for (Cell c : adjCells) {
-            totalCaptured += floodFill(c, targetColor, overwrite);
+            totalCaptured += floodFill(c, targetColor);
         }
 
         uncheckAll();
@@ -214,9 +227,8 @@ public class Board implements CellStatus{
     /* Explore the specified cell using flood fill method.
      * Mark a cell as checked if its status has already been determined.
      * If it is captured, mark all cells in its capture cells as captured, and return true.
-     * Captured cells will be updated when overwrite is set to be true
      * Return the number of captured cells, 0 if none. */
-    private int floodFill(Cell c, int loopColor, Boolean overwrite) {
+    private int floodFill(Cell c, int loopColor) {
         // All cells in the below two lists are not of loopColor.
         // Every non-loopColor cell will be explored
         // They will all be marked as captured if all cells are explored and none of them is a border cell.
@@ -234,15 +246,14 @@ public class Board implements CellStatus{
             if (!exploreCell(current, loopColor, capturedList, exploring, brotherList)) return 0;
         }
 
-        if (overwrite) {
-            for (Cell captured : capturedList) {
-                if (captured.isEmpty()) freeCells.remove(captured);
-                captured.setCaptured();
-            }
 
-            for (Cell brother : brotherList) {
-                brother.setFreed();
-            }
+        for (Cell captured : capturedList) {
+            if (captured.isEmpty()) freeCells.remove(captured);
+            captured.setCaptured();
+        }
+
+        for (Cell brother : brotherList) {
+            brother.setFreed();
         }
 
         return capturedList.size();
