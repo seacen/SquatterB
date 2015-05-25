@@ -70,7 +70,7 @@ public class Xichangz implements Player, CellStatus {
 		
 		move.P=role;
 		
-		moveAlgo(move);
+		randomMoveAlgo(move);
 		
 		board.updateBoard(move);
 
@@ -131,7 +131,7 @@ public class Xichangz implements Player, CellStatus {
 	/**
 	 * an moving algorithm for determining row,column values of a move to make 
 	 */
-	public void moveAlgo(Move move) {
+	public void randomMoveAlgo(Move move) {
 		
 		ArrayList<Cell> freeCells=board.getFreeCells();
 		
