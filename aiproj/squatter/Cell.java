@@ -77,6 +77,10 @@ public class Cell implements CellStatus {
         else if (val == CAPBLACK) val = BLACK;
     }
 
+    public boolean isEmpty() {
+        return val == EMPTY;
+    }
+
     @Override
     public String toString() {
         return "Cell{" +
