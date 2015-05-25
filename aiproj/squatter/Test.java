@@ -10,7 +10,7 @@ public class Test implements CellStatus{
 		// TODO Auto-generated method stub
 		
 		int n=6;
-		int p=BLACK;
+		int p=WHITE;
 		Move m = new Move();
 		Move prev;
 		
@@ -33,11 +33,11 @@ public class Test implements CellStatus{
         player.printBoard(System.out);
 
         Move move = new Move();
-        move.P = p;
+        move.P = BLACK;
         move.Col = 4;
         move.Row = 1;
 
-        player.getBoard().checkLoop(move);
+        player.opponentMove(move);
 
         System.out.println();
 
