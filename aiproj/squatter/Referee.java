@@ -62,13 +62,12 @@ public class Referee implements Piece{
 				boardEmptyPieces--;
 				P2.printBoard(System.out);
 
-			if(P1.opponentMove(lastPlayedMove)<0)
-			{
-				System.out.println("Exception: Player 1 rejected the move of player 2.");
-				P2.printBoard(System.out);
-				P1.printBoard(System.out);
-				System.exit(1);
-			}
+				if(P1.opponentMove(lastPlayedMove)<0) {
+					System.out.println("Exception: Player 1 rejected the move of player 2.");
+					P2.printBoard(System.out);
+					P1.printBoard(System.out);
+					System.exit(1);
+				}
 			}
 
 		}
