@@ -1,5 +1,8 @@
 package aiproj.squatter;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Created by hexin on 23/05/15.
  */
@@ -51,8 +54,13 @@ public class Cell implements CellStatus {
         if (val == color) {
             return true;
         }
-        else if ((val == WHITE && color == CAPWHITE) || (val == BLACK && color == CAPBLACK) ||
-                (val == EMPTY && color == CAPEMPTY)) {
+
+        Set<Integer> set = new HashSet<Integer>();
+        set.add(val);
+        set.add(color);
+
+        if ((set.contains(WHITE) && set.contains(CAPWHITE)) || (set.contains(BLACK) && set.contains(CAPBLACK)) ||
+                (set.contains(EMPTY) && set.contains(CAPEMPTY))) {
             return true;
         }
         return false;

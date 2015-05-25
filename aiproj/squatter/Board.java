@@ -194,10 +194,10 @@ public class Board implements CellStatus{
     /* Check if there is any loop formed by the move made, and update the board accordingly.
      * Return false if no loop is found, true otherwise. */
     public boolean checkLoop(Move move) {
-        List<Cell> adjCells = adjacentCells(move.Row, move.Col);
+        List<Cell> adjCells = crossAdjCells(move.Row, move.Col);
         boolean loopFound = false;
 
-        if (numEmptyCells(adjCells) < 2) {
+        if (numMatchingCells(adjacentCells(move.Row, move.Col), move.P) < 2) {
             return false;
         }
 
@@ -221,7 +221,9 @@ public class Board implements CellStatus{
         List<Cell> exploring = new ArrayList<Cell>();
 
         // Cell of its own color is not captured.
-        if (!c.matchColor(loopColor)) exploring.add(c);
+        if (c.matchColor(loopColor)) return false;
+
+        exploring.add(c);
 
         while (!exploring.isEmpty()) {
             Cell current = exploring.remove(0);
@@ -232,11 +234,12 @@ public class Board implements CellStatus{
             captured.setCaptured();
         }
 
-        return true;
+        return innerCells.isEmpty() ? false : true;
     }
 
     /* Explore the specified cell.
      * Add its adjacent non-loop cells to exploringList.
+     * Add itself to innerCellList.
      * Return false if it is a border cell. */
     private boolean exploreCell(Cell current, int loopColor, List<Cell> innerCellsList, List<Cell> exploringList) {
         if (exploringList.contains(current)) exploringList.remove(current);
@@ -246,11 +249,10 @@ public class Board implements CellStatus{
             return false;
         }
 
-        List<Cell> adjCells = new ArrayList<Cell>();
-        adjCells = adjacentCells(current.getRow(), current.getCol());
+        List<Cell> adjCells = crossAdjCells(current.getRow(), current.getCol());
 
         for (Cell adjCell : adjCells) {
-            if (!adjCell.matchColor(loopColor)) exploringList.add(adjCell);
+            if (!adjCell.matchColor(loopColor) && !adjCell.isChecked()) exploringList.add(adjCell);
         }
 
         innerCellsList.add(current);
@@ -284,6 +286,36 @@ public class Board implements CellStatus{
     }
 
 
+    /* Return the number of cells which has the same color as the specified in the array of cells */
+    private int numMatchingCells(List<Cell> cells, int target) {
+        int num = 0;
+        for (Cell c : cells) {
+            if (c.matchColor(target)) {
+                num++;
+            }
+        }
+        return num;
+    }
+
+    /* Return the list of a cell's up, down, left, right adjacent cells */
+    private List<Cell> crossAdjCells(int row, int col) {
+        int index[] = {-1, 1};
+        List<Cell> result = new ArrayList<Cell>();
+        for (int i : index) {
+            int rowX = row + i;
+            if (isValidCell(rowX, col)) {
+                result.add(board[rowX][col]);
+            }
+
+            int colY = col + i;
+            if (isValidCell(row, colY)) {
+                result.add(board[row][colY]);
+            }
+        }
+        return result;
+    }
+
+    /* A list of adjacent cells */
     private List<Cell> adjacentCells(int row, int col) {
         int index[] = {-1, 0 ,1};
         List<Cell> result = new ArrayList<Cell>();
@@ -291,13 +323,14 @@ public class Board implements CellStatus{
             for (int y : index) {
                 int rowX = x + row;
                 int colY = y + col;
-                if (isValidCell(rowX, colY) && (rowX!=0 || colY!=0)) {
+                if (isValidCell(rowX, colY) && (rowX!=row || colY!=col)) {
                     result.add(board[rowX][colY]);
                 }
             }
         }
         return result;
     }
+
 
     private boolean isValidCell(int row, int col) {
         if (row < dimension && row >= 0 && col < dimension && col >= 0) {
