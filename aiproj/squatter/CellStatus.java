@@ -19,9 +19,6 @@ public interface CellStatus extends Piece {
     public static final Map<Integer, Character> mapToChar = 
     		Collections.unmodifiableMap(
     				new HashMap<Integer, Character>(6) {
-    					/**
-						 * 
-						 */
 						private static final long serialVersionUID = 1L;
 
 						{
