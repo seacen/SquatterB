@@ -160,5 +160,9 @@ public class Xichangz implements Player, CellStatus {
 
 	    return randomNum;
 	}
+	
+	public void moveAlgo(Move move) {
+		
+	}
 
 }

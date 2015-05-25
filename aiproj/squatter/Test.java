@@ -21,27 +21,27 @@ public class Test implements CellStatus{
 
 		// TEST CONSTRUCTING BOARD FROM STDIN, TEST GETWINNER
 
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
-		player.init(n, p, br);
-
-        System.out.println("player:" + player.getRole());
-        System.out.println("free cell counts:" + player.getBoard().getFreeCellCount());
-		System.out.println("winner:" + player.getWinner());
-        System.out.println();
-
-        player.printBoard(System.out);
-
-        Move move = new Move();
-        move.P = p;
-        move.Col = 4;
-        move.Row = 1;
-
-        player.getBoard().checkLoop(move);
-
-        System.out.println();
-
-        player.printBoard(System.out);
+//		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+//
+//		player.init(n, p, br);
+//
+//        System.out.println("player:" + player.getRole());
+//        System.out.println("free cell counts:" + player.getBoard().getFreeCellCount());
+//		System.out.println("winner:" + player.getWinner());
+//        System.out.println();
+//
+//        player.printBoard(System.out);
+//
+//        Move move = new Move();
+//        move.P = p;
+//        move.Col = 4;
+//        move.Row = 1;
+//
+//        player.getBoard().checkLoop(move);
+//
+//        System.out.println();
+//
+//        player.printBoard(System.out);
 
 
 
@@ -49,15 +49,15 @@ public class Test implements CellStatus{
 
 
 		
-//		System.out.println(mapToChar.get(player.getRole()));
-//
-//		player.printBoard(System.out);
-//		System.out.println();
-//
-//		player.makeMove();
-//		prev=player.makeMove();
-//		player.printBoard(System.out);
-//		System.out.println();
+		System.out.println(mapToChar.get(player.getRole()));
+
+		player.printBoard(System.out);
+		System.out.println();
+
+		player.makeMove();
+		prev=player.makeMove();
+		player.printBoard(System.out);
+		System.out.println();
 		
 		
 		/*
