@@ -198,7 +198,6 @@ public class Board implements CellStatus{
     public int checkLoop(int row, int col, int targetColor, Boolean overwrite) {
         List<Cell> adjCells = crossAdjCells(row, col);
         int totalCaptured = 0;
-        boolean loopFound = false;
 
         if (numMatchingCells(adjacentCells(row, col), targetColor) < 2) {
             return 0;
