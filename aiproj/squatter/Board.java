@@ -3,6 +3,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Xichang Zhao
@@ -215,7 +217,8 @@ public class Board implements CellStatus{
         // All cells in the below two lists are not of loopColor.
         // Every non-loopColor cell will be explored
         // They will all be marked as captured if all cells are explored and none of them is a border cell.
-        List<Cell> innerCells = new ArrayList<Cell>();
+        List<Cell> capturedList = new ArrayList<Cell>();
+        Set<Cell> brotherList = new HashSet<Cell>();
         List<Cell> exploring = new ArrayList<Cell>();
 
         // Cell of its own color is not captured.
@@ -225,21 +228,26 @@ public class Board implements CellStatus{
 
         while (!exploring.isEmpty()) {
             Cell current = exploring.remove(0);
-            if (!exploreCell(current, loopColor, innerCells, exploring)) return false;
+            if (!exploreCell(current, loopColor, capturedList, exploring, brotherList)) return false;
         }
 
-        for (Cell captured : innerCells) {
+        for (Cell captured : capturedList) {
             captured.setCaptured();
         }
 
-        return innerCells.isEmpty() ? false : true;
+        for (Cell brother : brotherList) {
+            brother.setFreed();
+        }
+
+        return capturedList.isEmpty() ? false : true;
     }
 
     /* Explore the specified cell.
      * Add its adjacent non-loop cells to exploringList.
      * Add itself to innerCellList.
      * Return false if it is a border cell. */
-    private boolean exploreCell(Cell current, int loopColor, List<Cell> innerCellsList, List<Cell> exploringList) {
+    private boolean exploreCell(Cell current, int loopColor, List<Cell> capturedList, List<Cell> exploringList,
+                                Set<Cell> brotherList) {
         if (exploringList.contains(current)) exploringList.remove(current);
         current.setChecked(true);
 
@@ -251,9 +259,10 @@ public class Board implements CellStatus{
 
         for (Cell adjCell : adjCells) {
             if (!adjCell.matchColor(loopColor) && !adjCell.isChecked()) exploringList.add(adjCell);
+            if (adjCell.matchColor(loopColor)) brotherList.add(adjCell);
         }
 
-        innerCellsList.add(current);
+        capturedList.add(current);
         return true;
     }
 

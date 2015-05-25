@@ -10,7 +10,7 @@ public class Test implements CellStatus{
 		// TODO Auto-generated method stub
 		
 		int n=6;
-		int p=BLACK;
+		int p=WHITE;
 		Move m = new Move();
 		Move prev;
 		
@@ -20,6 +20,7 @@ public class Test implements CellStatus{
 		
 
 		// TEST CONSTRUCTING BOARD FROM STDIN, TEST GETWINNER
+
 
 //		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 //
@@ -42,6 +43,7 @@ public class Test implements CellStatus{
 //        System.out.println();
 //
 //        player.printBoard(System.out);
+
 
 
 
