@@ -160,5 +160,20 @@ public class Xichangz implements Player, CellStatus {
 
 	    return randomNum;
 	}
+	
+	public void moveAlgo(Move move) {
+		
+		ArrayList<Cell> freeCells=board.getFreeCells();
+		
+		for (Cell cell : freeCells) {
+			if (isSymmetry(cell)) {
+				continue;
+			}
+		}
+	}
+	
+	private boolean isSymmetry(Cell cell) {
+		return false;
+	}
 
 }

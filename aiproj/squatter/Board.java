@@ -13,17 +13,16 @@ import java.util.Set;
 public class Board implements CellStatus{
 	
 	private Cell[][] board;
-	private int dimension,freeCellCount,winner;
+	private int dimension,winner;
 	private ArrayList<Cell> freeCells;
 	
 	public Board(int n) {
 		// standard board initialization
 		dimension=n;
-		freeCellCount=dimension*dimension;
 		winner=checkWinner();
 		
 		board=new Cell[dimension][dimension];
-		freeCells= new ArrayList<Cell>(freeCellCount);
+		freeCells= new ArrayList<Cell>(dimension*dimension);
 		
 		for (int i=0;i<dimension;i++) {
 			for (int x=0;x<n;x++) {
@@ -38,12 +37,13 @@ public class Board implements CellStatus{
 		// test version board initialization from stdin
 		
 		dimension = n;
-		freeCellCount=dimension*dimension;
 		
-		freeCells= new ArrayList<Cell>(freeCellCount);
+		freeCells= new ArrayList<Cell>(dimension*dimension);
 		board=new Cell[dimension][dimension];
 		
 		String line;
+		
+		int freeCellCount=dimension*dimension;
 		
 		for (int i=0;i<dimension;i++) {
 			line=input.readLine();
@@ -78,12 +78,10 @@ public class Board implements CellStatus{
 			}
 		}
 		
+		freeCells= new ArrayList<Cell>(freeCellCount);
+		
 		winner=checkWinner();
 		
-	}
-	
-	public int getFreeCellCount() {
-		return freeCellCount;
 	}
 
 	public int getWinner() {
@@ -123,7 +121,7 @@ public class Board implements CellStatus{
 	
 	public int checkWinner() {
 		
-		if (freeCellCount!=0) {
+		if (freeCells.size()!=0) {
 			return EMPTY;
 		}
 		
@@ -168,8 +166,8 @@ public class Board implements CellStatus{
 	public void updateCell(int row, int column, int status) {
 		board[row][column].setVal(status);
 		freeCells.remove(board[row][column]);
-		freeCellCount--;
 	}
+	
 	
 	/**
 	 * validate a move to board
