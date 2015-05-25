@@ -3,6 +3,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Xichang Zhao
@@ -218,7 +220,7 @@ public class Board implements CellStatus{
         // Every non-loopColor cell will be explored
         // They will all be marked as captured if all cells are explored and none of them is a border cell.
         List<Cell> capturedList = new ArrayList<Cell>();
-        List<Cell> brotherList = new ArrayList<Cell>();
+        Set<Cell> brotherList = new HashSet<Cell>();
         List<Cell> exploring = new ArrayList<Cell>();
 
         // Cell of its own color is not captured.
@@ -246,7 +248,8 @@ public class Board implements CellStatus{
      * Add its adjacent non-loop cells to exploringList.
      * Add itself to innerCellList.
      * Return false if it is a border cell. */
-    private boolean exploreCell(Cell current, int loopColor, List<Cell> capturedList, List<Cell> exploringList, List<Cell> brotherList) {
+    private boolean exploreCell(Cell current, int loopColor, List<Cell> capturedList, List<Cell> exploringList,
+                                Set<Cell> brotherList) {
         if (exploringList.contains(current)) exploringList.remove(current);
         current.setChecked(true);
 
