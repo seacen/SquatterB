@@ -4,42 +4,43 @@ import java.util.ArrayList;
 
 public class MinimaxAlgorithm extends Intelligence {
 	
-	private int depth,level;
+	private int depth;
 
 	public MinimaxAlgorithm(Xichangz player, Board board, int depth) {
 		super(player, board);
 		this.depth = depth;
-		this.level = 0;
 	}
 
 	@Override
 	public Move makeMove() {
 		
+		int level=0;
+		
 		setCellToUpdate(getBoard().getFreeCells().get(0));
 		
-		maxValue(getBoard(),Integer.MIN_VALUE,Integer.MAX_VALUE);
+		maxValue(getBoard(),Integer.MIN_VALUE,Integer.MAX_VALUE,level);
 		
-		return cellToMove(getCellToUpdate());
+		return getCellToUpdate().cellToMove(getMaster().getRole());
 		
 		
 	}
 	
-	private int maxValue(Board board, int alpha, int beta) {
+	private double maxValue(Board board, double alpha, double beta, int level) {
 		
 		level++;
 		
-		if ((level>=depth) || board.getFreeCells().size()==1) {
+		if ((level>=depth) || board.getFreeCells().size()==0) {
 			
-			HeZhaoSquatterAlgorithm evaluator = new HeZhaoSquatterAlgorithm(board);
+			HeZhaoSquatterAlgorithm evaluator = new HeZhaoSquatterAlgorithm(board,getMaster());
 			
 			return evaluator.evalFunction();
 		}
 		
-		ArrayList<Board> successors=getSuccessors(board);
+		ArrayList<Board> successors=getSuccessors(board,level);
 		
 		int i=0;
 		for (Board successor : successors) {
-			int tmp=minValue(successor, alpha, beta);
+			double tmp=minValue(successor, alpha, beta,level);
 			if (alpha<tmp) {
 				alpha=tmp;
 				if (level==1) {
@@ -55,18 +56,21 @@ public class MinimaxAlgorithm extends Intelligence {
 		return alpha;
 	}
 	
-	private int minValue(Board board, int alpha, int beta) {
+	private double minValue(Board board, double alpha, double beta, int level) {
 		
 		level++;
 		
-		if (level==depth) {
-			return evaluate(board);
+		if (level==depth || board.getFreeCells().size()==0) {
+			
+			HeZhaoSquatterAlgorithm evaluator = new HeZhaoSquatterAlgorithm(board,getMaster());
+			
+			return evaluator.evalFunction();
 		}
 		
-		ArrayList<Board> successors=getSuccessors(board);
+		ArrayList<Board> successors=getSuccessors(board,level);
 		
 		for (Board successor : successors) {
-			int tmp=maxValue(successor, alpha, beta);
+			double tmp=maxValue(successor, alpha, beta,level);
 			if (beta>tmp) {
 				beta=tmp;
 			}
@@ -78,14 +82,7 @@ public class MinimaxAlgorithm extends Intelligence {
 		return beta;
 	}
 	
-	private int evaluate(Board board) {
-		
-		
-		
-		return 0;
-	}
-	
-	private ArrayList<Board> getSuccessors(Board board) {
+	private ArrayList<Board> getSuccessors(Board board,int level) {
 		
 		int levelRole;
 		ArrayList<Cell> freeCells = board.getFreeCells();
@@ -93,25 +90,24 @@ public class MinimaxAlgorithm extends Intelligence {
 		ArrayList<Board> successors = new ArrayList<Board>(freeCells.size());
 		
 		if (level%2==0) {
-			levelRole=getMaster().getRole();
+			levelRole=getMaster().getOppoRole();
 		}
 		else {
-			levelRole=getMaster().getOppoRole();
+			levelRole=getMaster().getRole();
 		}
 		
 		ArrayList<Cell> checkedCells = new ArrayList<Cell>(freeCells.size());
 		
 		for (Cell cell : freeCells) {
 			
-			if (!isSymmetry(cell,checkedCells)) {
+			if (isSymmetry(cell,checkedCells)) {
 				continue;
 			}
 			
 			checkedCells.add(cell);
-			Board newBoard=board;
+			Board newBoard=new Board(board);
 			
-			Move move=cellToMove(cell);
-			move.P=levelRole;
+			Move move=cell.cellToMove(levelRole);
 			newBoard.updateBoard(move);
 			
 			successors.add(newBoard);
@@ -123,7 +119,7 @@ public class MinimaxAlgorithm extends Intelligence {
 	
 	private boolean isSymmetry(Cell cell, ArrayList<Cell> CheckedCells) {
 		
-		return true;
+		return false;
 	}
 
 }

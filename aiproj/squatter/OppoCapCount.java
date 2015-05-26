@@ -1,16 +1,19 @@
 package aiproj.squatter;
 
-public class OppoCapCount extends Feature {
+public class OppoCapCount extends CapCount {
 
-	public OppoCapCount(Board board) {
-		super(board);
+	public OppoCapCount(Board board, int role) {
+		super(board, role);
 		// TODO Auto-generated constructor stub
 	}
-
-	@Override
+	
 	public void setFeature(Board board) {
-		// TODO Auto-generated method stub
-
+		
+		setCapturedCount(getCaptured(board));
+		
+		setValue((double)getCapturedCount()/(board.getDimension()*board.getDimension()));
+		
+		setWeight(-100);
 	}
 
 }

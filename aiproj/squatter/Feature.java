@@ -2,31 +2,40 @@ package aiproj.squatter;
 
 public abstract class Feature implements Piece{
 	
-	private int value,weight;
+	private int role;
+	private double value,weight;
 
-	public Feature(Board board) {
+	public Feature(Board board,int role) {
+		this.role=role;
 		setFeature(board);
 	}
 
 	public abstract void setFeature(Board board);
 	
-	
-	
-	public int getValue() {
+	public double getValue() {
 		return value;
 	}
 
-	public void setValue(int value) {
+	public void setValue(double value) {
 		this.value = value;
 	}
 
-	public int getWeight() {
+	public double getWeight() {
 		return weight;
 	}
 
-	public void setWeight(int weight) {
+	public void setWeight(double weight) {
 		this.weight = weight;
 	}
+
+	public int getRole() {
+		return role;
+	}
+
+	public void setRole(int role) {
+		this.role = role;
+	}
+	
 	
 
 }

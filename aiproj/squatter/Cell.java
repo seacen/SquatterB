@@ -10,6 +10,17 @@ public class Cell implements CellStatus {
     private int val;
     private int row, col;
     private boolean checked;
+    
+	public Move cellToMove(int role) {
+		
+		Move move = new Move();
+		
+		move.Row=row;
+		move.Col=col;
+		move.P=role;
+		
+		return move;
+	}
 
     public int getVal() {
         return val;
@@ -40,6 +51,13 @@ public class Cell implements CellStatus {
         this.col = col;
         this.val = EMPTY;
         this.checked = false;
+    }
+    
+    public Cell(Cell cell) {
+        this.row = cell.getRow();
+        this.col = cell.getCol();
+        this.val = cell.getVal();
+        this.checked = cell.isChecked();
     }
     
     public Cell(int row, int col, int val) {

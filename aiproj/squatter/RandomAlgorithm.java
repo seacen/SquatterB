@@ -22,7 +22,7 @@ public class RandomAlgorithm extends Intelligence {
 		
 		setCellToUpdate(freeCells.get(randInt(min,max)));
 		
-		return cellToMove(getCellToUpdate());
+		return getCellToUpdate().cellToMove(getMaster().getRole());
 		
 	}
 	

@@ -1,19 +1,23 @@
 package aiproj.squatter;
 
 public class HeZhaoSquatterAlgorithm extends LinearEvaluator {
+	
+	private Xichangz master;
 
-	public HeZhaoSquatterAlgorithm(Board board) {
+	public HeZhaoSquatterAlgorithm(Board board, Xichangz master) {
 		super(board);
-		// TODO Auto-generated constructor stub
+		this.master=master;
+		setFeatures(board);
 	}
 
 	@Override
-	public void setParameters(Board board) {
-		getFeatures()[0] = new OppoCapCount(board);
-		getFeatures()[1] = new OwnCapCount(board);
-		getFeatures()[2] = new OppoStepsToLoop(board);
-		getFeatures()[3] = new OwnStepsToLoop(board);
-		getFeatures()[4] = new SidePieces(board);
+	public void setFeatures(Board board) {
+		getFeatures()[0] = new OppoCapCount(board,master.getOppoRole());
+		getFeatures()[1] = new OwnCapCount(board,master.getRole());
+		getFeatures()[2] = new OppoSidePieceCount(board,master.getOppoRole());
+		getFeatures()[3] = new OwnSidePieceCount(board,master.getRole());
+//		getFeatures()[4] = new OppoStepToLoop(board,master.getOppoRole());
+//		getFeatures()[5] = new OwnStepToLoop(board,master.getRole());
 	}
 
 }

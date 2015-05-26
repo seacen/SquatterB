@@ -13,19 +13,6 @@ public abstract class Intelligence implements Piece{
 
 	public abstract Move makeMove();
 	
-	
-	
-	public Move cellToMove(Cell cell) {
-		
-		Move move = new Move();
-		
-		move.Row=cellToUpdate.getRow();
-		move.Col=cellToUpdate.getCol();
-		move.P=master.getRole();
-		
-		return move;
-	}
-	
 	//getter and setters
 	public Xichangz getMaster() {
 		return master;

@@ -15,6 +15,15 @@ public class Xichangz implements Player, CellStatus {
 	private int role;
 	private int oppoRole;
 	private Board board;
+	private boolean minimax=true;
+	
+	public Xichangz(boolean value) {
+		minimax=false;
+	}
+	
+	public Xichangz() {
+		minimax=true;
+	}
 	
 	public int getRole() {
 		return role;
@@ -72,9 +81,15 @@ public class Xichangz implements Player, CellStatus {
 		// TODO Auto-generated method stub
 		Move move;
 		
-		Intelligence intelligence = new RandomAlgorithm(this,board);
+		if (minimax) {
+			Intelligence intelligence = new MinimaxAlgorithm(this,board,4);
+			move=intelligence.makeMove();
+		}
 		
-		move=intelligence.makeMove();
+		else {
+			Intelligence intelligence = new RandomAlgorithm(this,board);
+			move=intelligence.makeMove();
+		}
 		
 		board.updateBoard(move);
 

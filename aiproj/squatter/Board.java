@@ -32,6 +32,20 @@ public class Board implements CellStatus{
 
         winner=checkWinner();
     }
+	
+	public Board (Board board) {
+		
+		this.dimension=board.getDimension();
+		this.board=new Cell[dimension][dimension];
+		
+		for (int i=0;i<board.getDimension();i++) {
+			for (int x=0;x<board.getDimension();x++) {
+				this.board[i][x]=new Cell(board.getBoard()[i][x]);
+			}
+		}
+		this.winner=board.getWinner();
+		this.freeCells=new ArrayList<Cell>(board.getFreeCells());
+	}
 
 	public Board(int n, BufferedReader input) throws NumberFormatException, IOException {
 		
@@ -209,16 +223,16 @@ public class Board implements CellStatus{
     /* Check if there is any loop formed by the move made, and update the board accordingly.
      * targetColor can be BLACK or WHITE. It is the loop color.
      * Return the number of captured cells found, 0 if none. */
-    public int checkLoop(int row, int col, int targetColor) {
+    public int checkLoop(int row, int col, int loopColor) {
         List<Cell> adjCells = crossAdjCells(row, col);
         int totalCaptured = 0;
 
-        if (numMatchingCells(adjacentCells(row, col), targetColor) < 2) {
+        if (numMatchingCells(adjacentCells(row, col), loopColor) < 2) {
             return 0;
         }
 
         for (Cell c : adjCells) {
-            totalCaptured += floodFill(c, targetColor);
+            totalCaptured += floodFill(c, loopColor);
         }
 
         return totalCaptured;

@@ -2,20 +2,19 @@ package aiproj.squatter;
 
 public abstract class LinearEvaluator {
 	
-	private final int featureNum=5;
+	private final int featureNum=4;
 	
 	private Feature[] features;
 	
 	public LinearEvaluator(Board board) {
 		features = new Feature[featureNum];
-		setParameters(board);
 	}
 	
-	public abstract void setParameters(Board board);
+	public abstract void setFeatures(Board board);
 
-	public int evalFunction() {
+	public final double evalFunction() {
 		
-		int sum=0;
+		double sum=0;
 		
 		for (int i=0;i<features.length;i++) {
 			sum+=(features[i].getValue()*features[i].getWeight());
