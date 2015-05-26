@@ -1,6 +1,7 @@
 package aiproj.squatter;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.HashSet;
@@ -220,7 +221,6 @@ public class Board implements CellStatus{
             totalCaptured += floodFill(c, targetColor);
         }
 
-        uncheckAll();
         return totalCaptured;
     }
 
@@ -236,6 +236,8 @@ public class Board implements CellStatus{
         Set<Cell> brotherList = new HashSet<Cell>();
         List<Cell> exploring = new ArrayList<Cell>();
 
+        uncheckAll();
+
         // Cell of its own color is not captured.
         if (c.matchColor(loopColor)) return 0;
 
@@ -249,12 +251,33 @@ public class Board implements CellStatus{
 
         for (Cell captured : capturedList) {
             if (captured.isEmpty()) freeCells.remove(captured);
-            captured.setCaptured();
+
+//            // test code
+//            exploring.clear();
+//            capturedList.clear();
+//            brotherList.clear();
+//            uncheckAll();
+//
+//            System.out.println();
+//            printBoard(System.out);
+//
+//            exploring.add(c);
+//
+//            while (!exploring.isEmpty()) {
+//                Cell current = exploring.remove(0);
+//                if (!exploreCell(current, loopColor, capturedList, exploring, brotherList)) return 0;
+//            }
+//
+//            // end of test code
+
+            captured.setCaptured(loopColor);
         }
 
         for (Cell brother : brotherList) {
             brother.setFreed();
         }
+
+//        uncheckAll();
 
         return capturedList.size();
     }
@@ -266,7 +289,6 @@ public class Board implements CellStatus{
     private boolean exploreCell(Cell current, int loopColor, List<Cell> capturedList, List<Cell> exploringList,
                                 Set<Cell> brotherList) {
         if (exploringList.contains(current)) exploringList.remove(current);
-        current.setChecked(true);
 
         if (isBorderCell(current)) {
             return false;
@@ -275,16 +297,17 @@ public class Board implements CellStatus{
         List<Cell> adjCells = crossAdjCells(current.getRow(), current.getCol());
 
         for (Cell adjCell : adjCells) {
-            if (!adjCell.matchColor(loopColor) && !adjCell.isChecked()) exploringList.add(adjCell);
+            if (adjCell.getVal() != loopColor && !adjCell.isChecked()) exploringList.add(adjCell);
             if (adjCell.matchColor(loopColor)) brotherList.add(adjCell);
         }
 
+        current.setChecked(true);
         capturedList.add(current);
         return true;
     }
 
     private boolean isBorderCell(Cell c) {
-        if (c.getRow() == 0 || c.getRow() == dimension || c.getCol() == 0 || c.getCol() == dimension) {
+        if (c.getRow() == 0 || c.getRow() == dimension-1 || c.getCol() == 0 || c.getCol() == dimension-1) {
             return true;
         }
         return false;
@@ -366,6 +389,28 @@ public class Board implements CellStatus{
 	public ArrayList<Cell> getFreeCells() {
 		return freeCells;
 	}
-	
+
+
+    public void printBoard(PrintStream output) {
+        // TODO Auto-generated method stub
+
+        Cell[][] printBoard=board;
+
+        for (int i=0;i<dimension;i++) {
+            for (int x=0;x<dimension;x++) {
+
+                //print the char value of a cellStatus int key
+                output.print(mapToChar.get(printBoard[i][x].getVal()));
+
+                //print space after each cell unless last cell
+                if (x<(dimension-1)) {
+                    output.print(' ');
+                }
+            }
+
+            output.print('\n');
+        }
+
+    }
 	
 }

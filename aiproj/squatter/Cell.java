@@ -66,10 +66,18 @@ public class Cell implements CellStatus {
         return false;
     }
 
-    public void setCaptured() {
-        if (val == WHITE) val = CAPWHITE;
-        else if (val == BLACK) val = CAPBLACK;
-        else if (val == EMPTY) val = CAPEMPTY;
+    public void setCaptured(int loopColor) {
+        if (val == EMPTY) val = CAPEMPTY;
+
+        if (loopColor == WHITE) {
+            if (val == CAPWHITE) val = WHITE;
+            else if (val == BLACK) val = CAPBLACK;
+        }
+
+        else if (loopColor == BLACK) {
+            if (val == CAPBLACK) val = BLACK;
+            else if (val == WHITE) val = CAPWHITE;
+        }
     }
 
     public void setFreed() {
