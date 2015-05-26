@@ -18,19 +18,19 @@ public class Board implements CellStatus{
 	
 	public Board(int n) {
 		// standard board initialization
-		dimension=n;
-		winner=checkWinner();
-		
-		board=new Cell[dimension][dimension];
-		freeCells= new ArrayList<Cell>(dimension*dimension);
-		
+        dimension=n;
+        board=new Cell[dimension][dimension];
+        freeCells= new ArrayList<Cell>(dimension*dimension);
+
 		for (int i=0;i<dimension;i++) {
 			for (int x=0;x<n;x++) {
 				board[i][x]=new Cell(i,x);
 				freeCells.add(board[i][x]);
 			}
 		}
-	}
+
+        winner=checkWinner();
+    }
 
 	public Board(int n, BufferedReader input) throws NumberFormatException, IOException {
 		
@@ -38,7 +38,7 @@ public class Board implements CellStatus{
 		
 		dimension = n;
 		
-		freeCells= new ArrayList<Cell>(dimension*dimension);
+//		freeCells= new ArrayList<Cell>(dimension*dimension);
 		board=new Cell[dimension][dimension];
 		
 		String line;
@@ -77,7 +77,7 @@ public class Board implements CellStatus{
 				}
 			}
 		}
-		
+
 		freeCells= new ArrayList<Cell>(freeCellCount);
 		
 		winner=checkWinner();
