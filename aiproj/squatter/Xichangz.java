@@ -110,25 +110,6 @@ public class Xichangz implements Player, CellStatus {
 	 * @param output printStream type output
 	 */
 	public void printBoard(PrintStream output) {
-		// TODO Auto-generated method stub
-		
-		Cell[][] printBoard=board.getBoard();
-		int dimension=board.getDimension();
-		
-		for (int i=0;i<dimension;i++) {
-			for (int x=0;x<dimension;x++) {
-				
-				//print the char value of a cellStatus int key
-				output.print(mapToChar.get(printBoard[i][x].getVal()));
-				
-				//print space after each cell unless last cell
-				if (x<(dimension-1)) {
-					output.print(' ');
-				}
-			}
-			
-			output.print('\n');
-		}
-		
+		board.printBoard(output);
 	}
 }

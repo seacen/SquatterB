@@ -233,7 +233,6 @@ public class Board implements CellStatus{
         // Every non-loopColor cell will be explored
         // They will all be marked as captured if all cells are explored and none of them is a border cell.
         List<Cell> capturedList = new ArrayList<Cell>();
-        Set<Cell> brotherList = new HashSet<Cell>();
         List<Cell> exploring = new ArrayList<Cell>();
 
         uncheckAll();
@@ -245,39 +244,14 @@ public class Board implements CellStatus{
 
         while (!exploring.isEmpty()) {
             Cell current = exploring.remove(0);
-            if (!exploreCell(current, loopColor, capturedList, exploring, brotherList)) return 0;
+            if (!exploreCell(current, loopColor, capturedList, exploring)) return 0;
         }
 
 
         for (Cell captured : capturedList) {
             if (captured.isEmpty()) freeCells.remove(captured);
-
-//            // test code
-//            exploring.clear();
-//            capturedList.clear();
-//            brotherList.clear();
-//            uncheckAll();
-//
-//            System.out.println();
-//            printBoard(System.out);
-//
-//            exploring.add(c);
-//
-//            while (!exploring.isEmpty()) {
-//                Cell current = exploring.remove(0);
-//                if (!exploreCell(current, loopColor, capturedList, exploring, brotherList)) return 0;
-//            }
-//
-//            // end of test code
-
             captured.setCaptured(loopColor);
         }
-
-        for (Cell brother : brotherList) {
-            brother.setFreed();
-        }
-
-//        uncheckAll();
 
         return capturedList.size();
     }
@@ -286,8 +260,7 @@ public class Board implements CellStatus{
      * Add its adjacent non-loop cells to exploringList.
      * Add itself to innerCellList.
      * Return false if it is a border cell. */
-    private boolean exploreCell(Cell current, int loopColor, List<Cell> capturedList, List<Cell> exploringList,
-                                Set<Cell> brotherList) {
+    private boolean exploreCell(Cell current, int loopColor, List<Cell> capturedList, List<Cell> exploringList) {
         if (exploringList.contains(current)) exploringList.remove(current);
 
         if (isBorderCell(current)) {
@@ -298,7 +271,6 @@ public class Board implements CellStatus{
 
         for (Cell adjCell : adjCells) {
             if (adjCell.getVal() != loopColor && !adjCell.isChecked()) exploringList.add(adjCell);
-            if (adjCell.matchColor(loopColor)) brotherList.add(adjCell);
         }
 
         current.setChecked(true);
@@ -392,8 +364,6 @@ public class Board implements CellStatus{
 
 
     public void printBoard(PrintStream output) {
-        // TODO Auto-generated method stub
-
         Cell[][] printBoard=board;
 
         for (int i=0;i<dimension;i++) {

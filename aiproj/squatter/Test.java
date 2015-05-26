@@ -33,13 +33,14 @@ public class Test implements CellStatus{
         player.printBoard(System.out);
 
         Move move = new Move();
-        move.P = p;
+        move.P = BLACK;
         move.Col = 4;
         move.Row = 1;
 
 
         System.out.println();
 
+        player.opponentMove(move);
         player.printBoard(System.out);
 
 
