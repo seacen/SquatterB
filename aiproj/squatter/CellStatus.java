@@ -1,8 +1,6 @@
 package aiproj.squatter;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /*
  *   Piece:
@@ -13,9 +11,12 @@ import java.util.Map;
  */
 
 public interface CellStatus extends Piece {
-    public static final int CAPWHITE = 3,
-                            CAPBLACK = 4,
-                            CAPEMPTY = 5;
+    public static final int CAPWHITE = 4,
+                            CAPBLACK = 5,
+                            CAPEMPTY = 6;
+
+    public static final List<Integer> VALID_STATUS = Arrays.asList(WHITE, BLACK, EMPTY, CAPWHITE, CAPBLACK, CAPEMPTY);
+
     public static final Map<Integer, Character> mapToChar = 
     		Collections.unmodifiableMap(
     				new HashMap<Integer, Character>(6) {
@@ -30,5 +31,4 @@ public interface CellStatus extends Piece {
     						put(CAPEMPTY,'-');
     					}
     				});
-    
 }

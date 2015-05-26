@@ -2,7 +2,6 @@ package aiproj.squatter;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.util.ArrayList;
 import java.util.Random;
 
 
@@ -15,6 +14,7 @@ public class Xichangz implements Player, CellStatus {
 	private int role;
 	private int oppoRole;
 	private Board board;
+    private int[][][] BOARD_HASH_ARRAY;
 	
 	public int getRole() {
 		return role;
@@ -36,13 +36,9 @@ public class Xichangz implements Player, CellStatus {
 	public int init(int n, int p) {
 		// TODO Auto-generated method stub
 		role=p;
-		if (p==BLACK) {
-			oppoRole=WHITE;
-		}
-		else {
-			oppoRole=BLACK;
-		}
-		board= new Board(n);
+        oppoRole = (p==BLACK) ? WHITE : BLACK;
+        BOARD_HASH_ARRAY = createBoardHashArray(n);
+		board= new Board(n, BOARD_HASH_ARRAY);
 		return 0;
 	}
 	
@@ -60,7 +56,7 @@ public class Xichangz implements Player, CellStatus {
 		else {
 			oppoRole=BLACK;
 		}
-		board= new Board(n,input);
+		board= new Board(n,input, BOARD_HASH_ARRAY);
 		return 0;
 	}
 
@@ -105,11 +101,30 @@ public class Xichangz implements Player, CellStatus {
 		return board.getWinner();
 	}
 
-	/**
+    public int[][][] getBoardHashArray() {
+        return BOARD_HASH_ARRAY;
+    }
+
+    /**
 	 * print a player's board
 	 * @param output printStream type output
 	 */
 	public void printBoard(PrintStream output) {
 		board.printBoard(output);
 	}
+
+    private int[][][] createBoardHashArray(int dimension) {
+        int[][][] boardHashArray = new int[dimension][dimension][CellStatus.VALID_STATUS.size()];
+
+        Random randomGenerator = new Random();
+        for (int x = 0; x < dimension; x ++) {
+            for (int y = 0; y < dimension; y ++) {
+                for (int option = 0; option < CellStatus.VALID_STATUS.size(); option ++) {
+                    boardHashArray[x][y][option] = randomGenerator.nextInt();
+                }
+            }
+        }
+
+        return boardHashArray;
+    }
 }

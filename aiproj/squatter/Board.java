@@ -16,8 +16,9 @@ public class Board implements CellStatus{
 	private Cell[][] board;
 	private int dimension,winner;
 	private ArrayList<Cell> freeCells;
+    private int[][][] BOARD_HASH_ARRAY;
 	
-	public Board(int n) {
+	public Board(int n, int[][][] boardHashArray) {
 		// standard board initialization
         dimension=n;
         board=new Cell[dimension][dimension];
@@ -30,10 +31,12 @@ public class Board implements CellStatus{
 			}
 		}
 
+        BOARD_HASH_ARRAY = deepCopyIntMatrix(boardHashArray);
+
         winner=checkWinner();
     }
 
-	public Board(int n, BufferedReader input) throws NumberFormatException, IOException {
+	public Board(int n, BufferedReader input, int[][][] boardHashArray) throws NumberFormatException, IOException {
 		
 		// test version board initialization from stdin
 		
@@ -80,8 +83,9 @@ public class Board implements CellStatus{
 		}
 
 		freeCells= new ArrayList<Cell>(freeCellCount);
-		
-		winner=checkWinner();
+        BOARD_HASH_ARRAY = deepCopyIntMatrix(boardHashArray);
+
+        winner=checkWinner();
 		
 	}
 
@@ -116,9 +120,23 @@ public class Board implements CellStatus{
 		checkLoop(move.Row, move.Col, move.P);
 		
 		winner=checkWinner();
-		
+
 		return true;
 	}
+
+    public static int[][][] deepCopyIntMatrix(int[][][] input) {
+        if (input == null)
+            return null;
+        int[][][] result = new int[input.length][][];
+        for (int x = 0; x < input.length; x++) {
+            result[x] = new int[input[x].length][];
+            for (int y = 0; y < input.length; y++) {
+                result[x][y] = input[x][y].clone();
+            }
+        }
+        return result;
+    }
+
 	
 	public int checkWinner() {
 		
@@ -380,7 +398,11 @@ public class Board implements CellStatus{
 
             output.print('\n');
         }
-
+    }
+    
+    
+    public int[] getHash() {
+        
     }
 	
 }
