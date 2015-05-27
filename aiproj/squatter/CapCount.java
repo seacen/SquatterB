@@ -1,5 +1,9 @@
 package aiproj.squatter;
-
+/**
+ * 
+ * features that need information about captured cell counts
+ *
+ */
 public abstract class CapCount extends Feature {
 	
 	private int capturedCount;
@@ -9,6 +13,11 @@ public abstract class CapCount extends Feature {
 		// TODO Auto-generated constructor stub
 	}
 
+	/**
+	 * get role specific captured count
+	 * @param board game board
+	 * @return role specific captured count
+	 */
 	public int getCaptured(Board board) {
 		
 		int[] capturedCounts = new int[board.getDimension()];
@@ -23,6 +32,8 @@ public abstract class CapCount extends Feature {
 		}
 	}
 
+	
+	//getter and setters
 	public int getCapturedCount() {
 		return capturedCount;
 	}
