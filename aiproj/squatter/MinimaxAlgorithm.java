@@ -52,11 +52,22 @@ public class MinimaxAlgorithm extends Intelligence {
 			return evaluator.evalFunction();
 		}
 		
-		ArrayList<Board> successors=getSuccessors(board,level);
+		int levelRole;	//role to play in current tree level
 		
 		int i=0,maxi=0;
-		for (Board successor : successors) {
-			double tmp=minValue(successor, alpha, beta,level);
+		for (Cell cell : board.getFreeCells()) {
+			
+			Board newBoard=new Board(board);
+			levelRole=getCurrRole(level);
+			Move move=cell.cellToMove(levelRole);
+			
+			newBoard.updateBoard(move);
+			
+			if (checkSymmetry(newBoard)) {
+				continue;
+			}
+			
+			double tmp=minValue(newBoard, alpha, beta,level);
 			if (alpha<tmp) {
 				alpha=tmp;
 				maxi=i;
@@ -97,10 +108,21 @@ public class MinimaxAlgorithm extends Intelligence {
 			return evaluator.evalFunction();
 		}
 		
-		ArrayList<Board> successors=getSuccessors(board,level);
+		int levelRole;	//role to play in current tree level
 		
-		for (Board successor : successors) {
-			double tmp=maxValue(successor, alpha, beta,level);
+		for (Cell cell : board.getFreeCells()) {
+			
+			Board newBoard=new Board(board);
+			levelRole=getCurrRole(level);
+			Move move=cell.cellToMove(levelRole);
+			
+			newBoard.updateBoard(move);
+			
+			if (checkSymmetry(newBoard)) {
+				continue;
+			}
+			
+			double tmp=maxValue(newBoard, alpha, beta,level);
 			if (beta>tmp) {
 				beta=tmp;
 			}
@@ -109,55 +131,24 @@ public class MinimaxAlgorithm extends Intelligence {
 			if (beta<=alpha) {
 				return alpha;
 			}
+			
 		}
 		
 		return beta;
 	}
 	
 	/**
-	 * get all successors of the given board
-	 * @param board current state
-	 * @param level current tree level for determining which 
-	 * piece color to put on board
-	 * @return a list of boards that are successors of parameter board
+	 *opponent makes the next move if current level is even, 
+	 *else own turn to play
+	 * @param level current tree level
+	 * @return role to play
 	 */
-	private ArrayList<Board> getSuccessors(Board board,int level) {
-		
-		int levelRole;
-		ArrayList<Cell> freeCells = board.getFreeCells();
-		
-		ArrayList<Board> successors = new ArrayList<Board>(freeCells.size());
-		
-		//opponent makes the next move if current level is even, 
-		//else own turn to play
+	private int getCurrRole(int level) {
 		if (level%2==0) {
-			levelRole=getMaster().getOppoRole();
+			return getMaster().getOppoRole();
 		}
 		else {
-			levelRole=getMaster().getRole();
+			return getMaster().getRole();
 		}
-		
-		for (Cell cell : freeCells) {
-			
-			if (isSymmetry()) {
-				continue;
-			}
-
-			Board newBoard=new Board(board);
-			
-			Move move=cell.cellToMove(levelRole);
-			newBoard.updateBoard(move);
-			
-			successors.add(newBoard);
-			
-		}
-		
-		return successors;
 	}
-	
-	private boolean isSymmetry() {
-		
-		return false;
-	}
-
 }
