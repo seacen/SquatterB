@@ -46,6 +46,7 @@ public class Board implements CellStatus{
 			}
 		}
 		this.winner=board.getWinner();
+        BOARD_HASH_ARRAY = board.getBOARD_HASH_ARRAY();
 		this.freeCells=new ArrayList<Cell>(board.getFreeCells());
 	}
 
@@ -506,5 +507,9 @@ public class Board implements CellStatus{
 
         int[] result = {realX, realY};
         return result;
+    }
+
+    public int[][][] getBOARD_HASH_ARRAY() {
+        return BOARD_HASH_ARRAY;
     }
 }

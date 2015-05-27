@@ -16,6 +16,7 @@ public class MinimaxAlgorithm extends Intelligence {
 	public MinimaxAlgorithm(Xichangz player, Board board, int depth) {
 		super(player, board);
 		this.depth = depth;
+        explored = new HashSet<Integer>();
 	}
 
 	@Override
@@ -31,7 +32,6 @@ public class MinimaxAlgorithm extends Intelligence {
 		maxValue(getBoard(),Integer.MIN_VALUE,Integer.MAX_VALUE,level);
 		
 		return getCellToUpdate().cellToMove(getMaster().getRole());
-		
 		
 	}
 	
