@@ -1,4 +1,4 @@
-package aiproj.squatter;
+package aiproj.squatter.hex1;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -15,7 +15,7 @@ public class Xichangz implements Player, CellStatus {
 	private int oppoRole;
 	private Board board;
 	private boolean minimax=true;	//indicates which algorithm to use
-	private final int DEPTH=7;		//cut off depth of the minimax tree
+	private final int DEPTH=6;		//cut off depth of the minimax tree
     private int[][][] BOARD_HASH_ARRAY;
 	
 	public Xichangz(boolean value) {
@@ -34,7 +34,12 @@ public class Xichangz implements Player, CellStatus {
 	public int init(int n, int p) {
 		// TODO Auto-generated method stub
 		role=p;
-        oppoRole = (p==BLACK) ? WHITE : BLACK;
+		if (p==BLACK) {
+			oppoRole=WHITE;
+		}
+		else {
+			oppoRole=BLACK;
+		}
         BOARD_HASH_ARRAY = createBoardHashArray(n);
 		board= new Board(n, BOARD_HASH_ARRAY);
 		return 0;

@@ -1,4 +1,4 @@
-package aiproj.squatter;
+package aiproj.squatter.hex1;
 /**
  * 
  * features that need information about captured cell counts

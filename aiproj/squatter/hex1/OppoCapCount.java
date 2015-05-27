@@ -1,8 +1,8 @@
-package aiproj.squatter;
+package aiproj.squatter.hex1;
 
-public class OwnCapCount extends CapCount {
+public class OppoCapCount extends CapCount {
 
-	public OwnCapCount(Board board, int role) {
+	public OppoCapCount(Board board, int role) {
 		super(board, role);
 		// TODO Auto-generated constructor stub
 	}
@@ -13,7 +13,7 @@ public class OwnCapCount extends CapCount {
 		
 		setValue((double)getCapturedCount()/(board.getDimension()*board.getDimension()));
 		
-		setWeight(100);
+		setWeight(-200);
 	}
 
 }
