@@ -2,20 +2,19 @@ package aiproj.squatter;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.util.ArrayList;
-import java.util.Random;
 
 
 
 /**
- * Created by hexin on 5/05/15.
+ * Xichangz player in game
  */
 public class Xichangz implements Player, CellStatus {
 	
 	private int role;
 	private int oppoRole;
 	private Board board;
-	private boolean minimax=true;
+	private boolean minimax=true;	//indicates which algorithm to use
+	private final int DEPTH=7;		//cut off depth of the minimax tree
 	
 	public Xichangz(boolean value) {
 		minimax=false;
@@ -23,18 +22,6 @@ public class Xichangz implements Player, CellStatus {
 	
 	public Xichangz() {
 		minimax=true;
-	}
-	
-	public int getRole() {
-		return role;
-	}
-
-	public Board getBoard() {
-		return board;
-	}
-	
-	public int getOppoRole() {
-		return oppoRole;
 	}
 
 	/**
@@ -82,7 +69,7 @@ public class Xichangz implements Player, CellStatus {
 		Move move;
 		
 		if (minimax) {
-			Intelligence intelligence = new MinimaxAlgorithm(this,board,4);
+			Intelligence intelligence = new MinimaxAlgorithm(this,board,7);
 			move=intelligence.makeMove();
 		}
 		
@@ -115,16 +102,30 @@ public class Xichangz implements Player, CellStatus {
 		return 0;
 	}
 
-	public int getWinner() {
-		// TODO Auto-generated method stub
-		return board.getWinner();
-	}
-
 	/**
 	 * print a player's board
 	 * @param output printStream type output
 	 */
 	public void printBoard(PrintStream output) {
 		board.printBoard(output);
+	}
+	
+	
+	
+	//getter and setters
+	public int getWinner() {
+		// TODO Auto-generated method stub
+		return board.getWinner();
+	}
+	public int getRole() {
+		return role;
+	}
+
+	public Board getBoard() {
+		return board;
+	}
+	
+	public int getOppoRole() {
+		return oppoRole;
 	}
 }

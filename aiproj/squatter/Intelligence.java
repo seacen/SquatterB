@@ -1,5 +1,9 @@
 package aiproj.squatter;
 
+/**
+ * Intelligence for playing the game.
+ *
+ */
 public abstract class Intelligence implements Piece{
 	
 	private Xichangz master;
@@ -12,6 +16,7 @@ public abstract class Intelligence implements Piece{
 	}
 
 	public abstract Move makeMove();
+	
 	
 	//getter and setters
 	public Xichangz getMaster() {

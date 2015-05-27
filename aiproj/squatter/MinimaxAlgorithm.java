@@ -1,10 +1,14 @@
 package aiproj.squatter;
 
 import java.util.ArrayList;
-
+/**
+ * 
+ * minimax tree algorithm for determining the move
+ *
+ */
 public class MinimaxAlgorithm extends Intelligence {
 	
-	private int depth;
+	private int depth;		//cut off depth of the tree
 
 	public MinimaxAlgorithm(Xichangz player, Board board, int depth) {
 		super(player, board);
@@ -12,6 +16,9 @@ public class MinimaxAlgorithm extends Intelligence {
 	}
 
 	@Override
+	/**
+	 * make a move by selecting the max value of the current board successors
+	 */
 	public Move makeMove() {
 		
 		int level=0;
@@ -25,10 +32,19 @@ public class MinimaxAlgorithm extends Intelligence {
 		
 	}
 	
+	/**
+	 * find the max value of the current board successors.
+	 * @param board the current state in the tree
+	 * @param alpha the best score for max along the path to state
+	 * @param beta the best score for min along the path to state
+	 * @param level current tree level
+	 * @return the max value of current state
+	 */
 	private double maxValue(Board board, double alpha, double beta, int level) {
 		
 		level++;
 		
+		//if current state is in the cut off depth level or has no more successors
 		if ((level>=depth) || board.getFreeCells().size()==0) {
 			
 			HeZhaoSquatterAlgorithm evaluator = new HeZhaoSquatterAlgorithm(board,getMaster());
@@ -38,28 +54,42 @@ public class MinimaxAlgorithm extends Intelligence {
 		
 		ArrayList<Board> successors=getSuccessors(board,level);
 		
-		int i=0;
+		int i=0,maxi=0;
 		for (Board successor : successors) {
 			double tmp=minValue(successor, alpha, beta,level);
 			if (alpha<tmp) {
 				alpha=tmp;
-				if (level==1) {
-					setCellToUpdate(board.getFreeCells().get(i));
-				}
+				maxi=i;
 			}
+			
+			//pruning
 			if (alpha>=beta) {
 				return beta;
 			}
 			i++;
 		}
 		
+		//set cellToUpdate to max value cell if at the top level
+		if (level==1) {
+			setCellToUpdate(board.getFreeCells().get(maxi));
+		}
+		
 		return alpha;
 	}
 	
+	/**
+	 * find the min value of the current board successors.
+	 * @param board the current state in the tree
+	 * @param alpha the best score for max along the path to state
+	 * @param beta the best score for min along the path to state
+	 * @param level current tree level
+	 * @return the min value of current state
+	 */
 	private double minValue(Board board, double alpha, double beta, int level) {
 		
 		level++;
 		
+		//if current state is in the cut off depth level or has no more successors
 		if (level==depth || board.getFreeCells().size()==0) {
 			
 			HeZhaoSquatterAlgorithm evaluator = new HeZhaoSquatterAlgorithm(board,getMaster());
@@ -74,6 +104,8 @@ public class MinimaxAlgorithm extends Intelligence {
 			if (beta>tmp) {
 				beta=tmp;
 			}
+			
+			//pruning
 			if (beta<=alpha) {
 				return alpha;
 			}
@@ -82,6 +114,13 @@ public class MinimaxAlgorithm extends Intelligence {
 		return beta;
 	}
 	
+	/**
+	 * get all successors of the given board
+	 * @param board current state
+	 * @param level current tree level for determining which 
+	 * piece color to put on board
+	 * @return a list of boards that are successors of parameter board
+	 */
 	private ArrayList<Board> getSuccessors(Board board,int level) {
 		
 		int levelRole;
@@ -89,6 +128,8 @@ public class MinimaxAlgorithm extends Intelligence {
 		
 		ArrayList<Board> successors = new ArrayList<Board>(freeCells.size());
 		
+		//opponent makes the next move if current level is even, 
+		//else own turn to play
 		if (level%2==0) {
 			levelRole=getMaster().getOppoRole();
 		}
@@ -96,15 +137,12 @@ public class MinimaxAlgorithm extends Intelligence {
 			levelRole=getMaster().getRole();
 		}
 		
-		ArrayList<Cell> checkedCells = new ArrayList<Cell>(freeCells.size());
-		
 		for (Cell cell : freeCells) {
 			
-			if (isSymmetry(cell,checkedCells)) {
+			if (isSymmetry()) {
 				continue;
 			}
-			
-			checkedCells.add(cell);
+
 			Board newBoard=new Board(board);
 			
 			Move move=cell.cellToMove(levelRole);
@@ -117,7 +155,7 @@ public class MinimaxAlgorithm extends Intelligence {
 		return successors;
 	}
 	
-	private boolean isSymmetry(Cell cell, ArrayList<Cell> CheckedCells) {
+	private boolean isSymmetry() {
 		
 		return false;
 	}

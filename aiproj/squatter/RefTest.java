@@ -28,7 +28,7 @@ public class RefTest implements Piece{
 		System.out.println("Referee started !");
 		try{
 			P1 = new Xichangz();
-			P2 = new Xichangz();
+			P2 = new Xichangz(false);
 		}
 		catch(Exception e){
 			System.out.println("Error "+ e.getMessage());

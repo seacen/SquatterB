@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * @author Xichang Zhao
@@ -34,10 +32,11 @@ public class Board implements CellStatus{
     }
 	
 	public Board (Board board) {
-		
+		//copy a new board;
 		this.dimension=board.getDimension();
 		this.board=new Cell[dimension][dimension];
 		
+		//iterate through each cell in two dimensional board to copy
 		for (int i=0;i<board.getDimension();i++) {
 			for (int x=0;x<board.getDimension();x++) {
 				this.board[i][x]=new Cell(board.getBoard()[i][x]);
@@ -53,7 +52,6 @@ public class Board implements CellStatus{
 		
 		dimension = n;
 		
-//		freeCells= new ArrayList<Cell>(dimension*dimension);
 		board=new Cell[dimension][dimension];
 		
 		String line;
@@ -134,6 +132,13 @@ public class Board implements CellStatus{
 		return true;
 	}
 	
+	/**
+	 * check the current winner of the game
+	 * @return <strong>EMPTY</strong> if board has free cells,<br>
+	 * <strong>BLACK</strong> if blackCaptured is more<br>
+	 * <strong>WHITE</strong> if whiteCaptured is more<br>
+	 * <strong>DEAD</strong> if above two are equal
+	 */
 	public int checkWinner() {
 		
 		if (freeCells.size()!=0) {
@@ -159,6 +164,11 @@ public class Board implements CellStatus{
 		}
 	}
 	
+	/**
+	 * update the capturedCounts array with BLACK and WHITE captured cell counts
+	 * @param capturedCounts an array of two ints, represents BLACK and WHITE
+	 * captured count respectively.
+	 */
 	public void calculateCaptured(int[] capturedCounts) {
 		
 		int blackCaptured=0, whiteCaptured=0;
@@ -220,7 +230,7 @@ public class Board implements CellStatus{
 		return true;
 	}
 
-    /* Check if there is any loop formed by the move made, and update the board accordingly.
+    /** Check if there is any loop formed by the move made, and update the board accordingly.
      * targetColor can be BLACK or WHITE. It is the loop color.
      * Return the number of captured cells found, 0 if none. */
     public int checkLoop(int row, int col, int loopColor) {
@@ -308,7 +318,8 @@ public class Board implements CellStatus{
     }
 
     /* Return the number of empty cells in the array of cells */
-    private int numEmptyCells(List<Cell> cells) {
+    @SuppressWarnings("unused")
+	private int numEmptyCells(List<Cell> cells) {
         int num = 0;
         for (Cell c : cells) {
             if (c.getVal() == EMPTY) {
@@ -376,7 +387,10 @@ public class Board implements CellStatus{
 		return freeCells;
 	}
 
-
+/**
+ * print board to output
+ * @param output printStream output to be written
+ */
     public void printBoard(PrintStream output) {
         Cell[][] printBoard=board;
 
@@ -394,6 +408,7 @@ public class Board implements CellStatus{
 
             output.print('\n');
         }
+        output.print('\n');
 
     }
 	

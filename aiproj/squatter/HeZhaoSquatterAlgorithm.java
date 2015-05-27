@@ -1,5 +1,10 @@
 package aiproj.squatter;
 
+/**
+ * 
+ * set of feature selections named as HeZhao Squatter Algorithm
+ *
+ */
 public class HeZhaoSquatterAlgorithm extends LinearEvaluator {
 	
 	private Xichangz master;
