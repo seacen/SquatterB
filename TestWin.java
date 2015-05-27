@@ -9,6 +9,8 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Random;
+import aiproj.squatter.*;
 
 /**
  * Test if a player has won and count number of captured cells for each player for a given input
@@ -126,9 +128,27 @@ public class TestWin {
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		
-		TestWin.test(br);
-	}
+//		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+//
+//		TestWin.test(br);
+
+        Random randomGenerator = new Random();
+        System.out.println();
+
+        int x = randomGenerator.nextInt();
+        int y = randomGenerator.nextInt();
+        System.out.println(x);
+        System.out.println(y);
+        System.out.println(x^y);
+        x ^= y;
+        System.out.println(x);
+
+        int pos = CellStatus.VALID_STATUS.lastIndexOf(CellStatus.CAPEMPTY);
+        System.out.println(pos);
+
+        int[] master = {1,3};
+        int[] changed = master.clone();
+
+    }
 
 }
