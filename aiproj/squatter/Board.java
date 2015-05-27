@@ -10,12 +10,13 @@ import java.util.List;
  *
  */
 public class Board implements CellStatus{
-	
+//	public static
 	private Cell[][] board;
 	private int dimension,winner;
 	private ArrayList<Cell> freeCells;
+    private int[][][] BOARD_HASH_ARRAY;
 	
-	public Board(int n) {
+	public Board(int n, int[][][] boardHashArray) {
 		// standard board initialization
         dimension=n;
         board=new Cell[dimension][dimension];
@@ -28,6 +29,8 @@ public class Board implements CellStatus{
 			}
 		}
 
+//        BOARD_HASH_ARRAY = deepCopyIntMatrix(boardHashArray);
+        BOARD_HASH_ARRAY = boardHashArray;
         winner=checkWinner();
     }
 	
@@ -46,7 +49,7 @@ public class Board implements CellStatus{
 		this.freeCells=new ArrayList<Cell>(board.getFreeCells());
 	}
 
-	public Board(int n, BufferedReader input) throws NumberFormatException, IOException {
+	public Board(int n, BufferedReader input, int[][][] boardHashArray) throws NumberFormatException, IOException {
 		
 		// test version board initialization from stdin
 		
@@ -92,8 +95,10 @@ public class Board implements CellStatus{
 		}
 
 		freeCells= new ArrayList<Cell>(freeCellCount);
-		
-		winner=checkWinner();
+//        BOARD_HASH_ARRAY = deepCopyIntMatrix(boardHashArray);
+        BOARD_HASH_ARRAY = boardHashArray;
+
+        winner=checkWinner();
 		
 	}
 
@@ -128,9 +133,23 @@ public class Board implements CellStatus{
 		checkLoop(move.Row, move.Col, move.P);
 		
 		winner=checkWinner();
-		
+
 		return true;
 	}
+
+    public static int[][][] deepCopyIntMatrix(int[][][] input) {
+        if (input == null)
+            return null;
+        int[][][] result = new int[input.length][][];
+        for (int x = 0; x < input.length; x++) {
+            result[x] = new int[input[x].length][];
+            for (int y = 0; y < input.length; y++) {
+                result[x][y] = input[x][y].clone();
+            }
+        }
+        return result;
+    }
+
 	
 	/**
 	 * check the current winner of the game
@@ -191,7 +210,7 @@ public class Board implements CellStatus{
 				}
 			}
 		}
-		
+
 		capturedCounts[0]=blackCaptured;
 		capturedCounts[1]=whiteCaptured;
 	}
@@ -409,7 +428,83 @@ public class Board implements CellStatus{
             output.print('\n');
         }
         output.print('\n');
-
     }
-	
+    
+    
+    public int[] getHash() {
+        int[] results = {0, 0, 0, 0};
+        for (int x = 0; x < dimension; x++) {
+            for (int y = 0; y < dimension; y++) {
+                int statusIndex = VALID_STATUS.lastIndexOf(board[x][y].getVal());
+                results[0] ^= BOARD_HASH_ARRAY[x][y][statusIndex];
+
+                int[] trans90 = transform90(x ,y);
+                results[1] ^= BOARD_HASH_ARRAY[trans90[0]][trans90[1]][statusIndex];
+
+                int[] trans180 = transform180(x, y);
+                results[2] ^= BOARD_HASH_ARRAY[trans180[0]][trans180[1]][statusIndex];
+
+                int[] trans270 = transform270(x ,y);
+                results[3] ^= BOARD_HASH_ARRAY[trans270[0]][trans270[1]][statusIndex];
+            }
+        }
+
+        return results;
+    }
+
+    /* Transform a board cell coordinate by rotating the board based on the center by 90 degrees */
+    private int[] transform90(int row, int col) {
+        int[] virtualCoord = realToVirtualCoord(row, col);
+
+        int[] result = virtualToRealCoord(virtualCoord[1] * -1, virtualCoord[0]);
+        return result;
+    }
+
+    /* Transform a board cell coordinate by rotating the board based on the center by 180 degrees */
+    private int[] transform180(int row, int col) {
+        int[] virtualCoord = realToVirtualCoord(row, col);
+
+        int[] result = virtualToRealCoord(virtualCoord[0] * -1, virtualCoord[1] * -1);
+        return result;
+    }
+
+    /* Transform a board cell coordinate by rotating the board based on the center by 270 degrees */
+    private int[] transform270(int row, int col) {
+        int[] virtualCoord = realToVirtualCoord(row, col);
+
+        int[] result = virtualToRealCoord(virtualCoord[1], virtualCoord[0] * -1);
+        return result;
+    }
+
+    /* Return the coordinate in a graph with the board center being the origin */
+    private int[] realToVirtualCoord(int realX, int realY) {
+        int virtualX, virtualY;
+
+        if (dimension%2 == 0) {
+            virtualX = (realX >= dimension/2) ? (realX + 1 - dimension/2) : (realX - dimension/2);
+            virtualY = (realY >= dimension/2) ? (realY + 1 - dimension/2) : (realY - dimension/2);
+        } else {
+            virtualX = realX - (dimension-1)/2;
+            virtualY = realY - (dimension-1)/2;
+        }
+
+        int[] result = {virtualX, virtualY};
+        return result;
+    }
+
+    /* Return the coordinate in a graph with the board center being the origin */
+    private int[] virtualToRealCoord(int virtualX, int virtualY) {
+        int realX, realY;
+
+        if (dimension%2 == 0) {
+            realX = (virtualX >= 0) ? (virtualX - 1 + dimension/2) : (virtualX + dimension/2);
+            realY = (virtualY >= 0) ? (virtualY - 1 + dimension/2) : (virtualY + dimension/2);
+        } else {
+            realX = virtualX + (dimension-1)/2;
+            realY = virtualY + (dimension-1)/2;
+        }
+
+        int[] result = {realX, realY};
+        return result;
+    }
 }
