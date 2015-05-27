@@ -56,7 +56,8 @@ public class Xichangz implements Player, CellStatus {
 		else {
 			oppoRole=BLACK;
 		}
-		board= new Board(n,input, BOARD_HASH_ARRAY);
+        BOARD_HASH_ARRAY = createBoardHashArray(n);
+        board= new Board(n,input, BOARD_HASH_ARRAY);
 		return 0;
 	}
 
