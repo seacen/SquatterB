@@ -1,6 +1,8 @@
 package aiproj.squatter;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+
 /**
  * 
  * minimax tree algorithm for determining the move
@@ -9,6 +11,7 @@ import java.util.ArrayList;
 public class MinimaxAlgorithm extends Intelligence {
 	
 	private int depth;		//cut off depth of the tree
+    private HashSet<Integer> explored;
 
 	public MinimaxAlgorithm(Xichangz player, Board board, int depth) {
 		super(player, board);
@@ -151,4 +154,24 @@ public class MinimaxAlgorithm extends Intelligence {
 			return getMaster().getRole();
 		}
 	}
+
+    /* Return true if a symmetric copy of the specified board has alread been explored.
+     * Return false otherwise, and add its hash values to the explored list. */
+	private boolean checkSymmetry(Board board) {
+        int[] hash = board.getHash();
+        if (isSymmetric(board))
+            return true;
+        else {
+            for (int h : hash) {
+                explored.add(h);
+            }
+            return false;
+        }
+	}
+
+    /* Check if a symmetric copy of the specified board has alread been explored. */
+    private boolean isSymmetric(Board board) {
+        return explored.contains(board.getHash()[0]);
+    }
+
 }
