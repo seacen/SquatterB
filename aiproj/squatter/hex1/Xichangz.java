@@ -15,7 +15,7 @@ public class Xichangz implements Player, CellStatus {
 	private int oppoRole;
 	private Board board;
 	private boolean minimax=true;	//indicates which algorithm to use
-	private final int DEPTH=6;		//cut off depth of the minimax tree
+	private final int DEPTH=7;		//cut off depth of the minimax tree
     private int[][][] BOARD_HASH_ARRAY;
 	
 	public Xichangz(boolean value) {
