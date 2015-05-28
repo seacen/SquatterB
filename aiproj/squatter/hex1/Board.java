@@ -38,8 +38,10 @@ public class Board implements CellStatus{
 		//copy a new board;
 		this.dimension=board.getDimension();
 		this.board=new Cell[dimension][dimension];
-		
-		//iterate through each cell in two dimensional board to copy
+
+        freeCells = new ArrayList<Cell>();
+
+        //iterate through each cell in two dimensional board to copy
 		for (int i=0;i<board.getDimension();i++) {
 			for (int x=0;x<board.getDimension();x++) {
 				this.board[i][x]=new Cell(board.getBoard()[i][x]);
@@ -48,11 +50,6 @@ public class Board implements CellStatus{
 		this.winner=board.getWinner();
         BOARD_HASH_ARRAY = board.getBOARD_HASH_ARRAY();
 
-        freeCells = new ArrayList<Cell>();
-//        for (Cell c : board.getFreeCells()) {
-//            freeCells.add(new Cell(c));
-//        }
-
         for (int i=0;i<dimension;i++) {
             for (int x=0;x<dimension;x++) {
                 if (this.board[i][x].getVal()==EMPTY) {
@@ -60,10 +57,8 @@ public class Board implements CellStatus{
                 }
             }
         }
-
-//		this.freeCells=new ArrayList<Cell>(board.getFreeCells());
 	}
-    
+
 
 	public Board(int n, BufferedReader input, int[][][] boardHashArray) throws NumberFormatException, IOException {
 		
@@ -244,22 +239,8 @@ public class Board implements CellStatus{
 	 * @param status cell status (e.g. BLACK, WHITE, CAPWHITE)
 	 */
 	public void updateCell(int row, int column, int status) {
-        System.out.println("Board before update:");
-        printBoard(System.out);
-        for (Cell c : getFreeCells()) {
-            System.out.println(c);
-        }
-
-        System.out.println("Updating: " + row + " " + column + " " + status);
-
-        System.out.println(freeCells.remove(board[row][column]));
+        if (board[row][column].getVal() == EMPTY)freeCells.remove(board[row][column]);
         board[row][column].setVal(status);
-
-        System.out.println("Board after update:");
-        printBoard(System.out);
-        for (Cell c : getFreeCells()) {
-            System.out.println(c);
-        }
 	}
 	
 	
@@ -370,18 +351,6 @@ public class Board implements CellStatus{
                 board[x][y].setChecked(false);
             }
         }
-    }
-
-    /* Return the number of empty cells in the array of cells */
-    @SuppressWarnings("unused")
-	private int numEmptyCells(List<Cell> cells) {
-        int num = 0;
-        for (Cell c : cells) {
-            if (c.getVal() == EMPTY) {
-                num++;
-            }
-        }
-        return num;
     }
 
 
