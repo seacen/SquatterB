@@ -1,6 +1,5 @@
 package aiproj.squatter.hex1;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 
 /**
@@ -83,15 +82,15 @@ public class MinimaxAlgorithm extends Intelligence {
 //			if (checkSymmetry(newBoard)) {
 //				continue;
 //			}
-//			System.out.println("BEGIN!!");
-//			newBoard.printBoard(System.out);
+			System.out.println("BEGIN!!");
+			newBoard.printBoard(System.out);
 			double tmp=minValue(newBoard, alpha, beta,level);
-//			System.out.println(tmp);
-//			System.out.print("\n\n");
+			System.out.println(tmp);
+			System.out.print("\n\n");
 			if (alpha<tmp) {
 				alpha=tmp;
 				maxCell=cell;
-//				System.out.println("CHANGED!!\n");
+				System.out.println("CHANGED!!\n");
 			}
 			
 			//pruning
@@ -102,7 +101,7 @@ public class MinimaxAlgorithm extends Intelligence {
 		
 		//set cellToUpdate to max value cell if at the top level
 		if (level==1) {
-//			System.out.println("UPDATING!!");
+			System.out.println("UPDATING!!");
 			setCellToUpdate(maxCell);
 		}
 		return alpha;
