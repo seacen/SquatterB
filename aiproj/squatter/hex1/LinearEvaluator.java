@@ -1,4 +1,4 @@
-package aiproj.squatter;
+package aiproj.squatter.hex1;
 /**
  * 
  * evaluator for generating minimax value
@@ -26,6 +26,7 @@ public abstract class LinearEvaluator {
 		double sum=0;
 		
 		for (int i=0;i<features.length;i++) {
+			//System.out.println((features[i].getValue()*features[i].getWeight()));
 			sum+=(features[i].getValue()*features[i].getWeight());
 		}
 		

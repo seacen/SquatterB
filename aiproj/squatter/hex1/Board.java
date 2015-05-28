@@ -1,4 +1,4 @@
-package aiproj.squatter;
+package aiproj.squatter.hex1;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -61,7 +61,6 @@ public class Board implements CellStatus{
 		String line;
 		
 		int freeCellCount=dimension*dimension;
-		
 		for (int i=0;i<dimension;i++) {
 			line=input.readLine();
 			for (int x=0;x<dimension;x++) {
@@ -94,8 +93,15 @@ public class Board implements CellStatus{
 				}
 			}
 		}
-
 		freeCells= new ArrayList<Cell>(freeCellCount);
+		
+		for (int i=0;i<dimension;i++) {
+			for (int x=0;x<n;x++) {
+				if (board[i][x].getVal()==EMPTY) {
+					freeCells.add(board[i][x]);
+				}
+			}
+		}
 //        BOARD_HASH_ARRAY = deepCopyIntMatrix(boardHashArray);
         BOARD_HASH_ARRAY = boardHashArray;
 

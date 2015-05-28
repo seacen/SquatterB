@@ -1,6 +1,5 @@
-package aiproj.squatter;
+package aiproj.squatter.hex1;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 
 /**
@@ -27,10 +26,22 @@ public class MinimaxAlgorithm extends Intelligence {
 		
 		int level=0;
 		
-		setCellToUpdate(getBoard().getFreeCells().get(0));
+//		int freeSize=getBoard().getFreeCells().size();
+//		
+//		int allCells=getBoard().getDimension()*getBoard().getDimension();
+//		
+//		if (freeSize==allCells || freeSize==allCells-1) {
+//			if (getBoard().getBoard()[0][1].getVal()==getMaster().getOppoRole()) {
+//				setCellToUpdate(getBoard().getBoard()[0][2]);
+//				return getCellToUpdate().cellToMove(getMaster().getRole());
+//			}
+//			else {
+//				setCellToUpdate(getBoard().getBoard()[0][1]);
+//				return getCellToUpdate().cellToMove(getMaster().getRole());
+//			}
+//		}
 		
 		maxValue(getBoard(),Integer.MIN_VALUE,Integer.MAX_VALUE,level);
-		
 		return getCellToUpdate().cellToMove(getMaster().getRole());
 		
 	}
@@ -48,46 +59,51 @@ public class MinimaxAlgorithm extends Intelligence {
 		level++;
 		
 		//if current state is in the cut off depth level or has no more successors
-		if ((level>=depth) || board.getFreeCells().size()==0) {
+		if ((level==depth) || board.getFreeCells().size()==0) {
 			
 			HeZhaoSquatterAlgorithm evaluator = new HeZhaoSquatterAlgorithm(board,getMaster());
 			
-			return evaluator.evalFunction();
+			double score=evaluator.evalFunction();
+			
+			return score;
 		}
 		
-		int levelRole;	//role to play in current tree level
+		int levelRole=getMaster().getRole();	//role to play in current tree level
 		
-		int i=0,maxi=0;
+		Cell maxCell= new Cell(board.getFreeCells().get(0));
 		for (Cell cell : board.getFreeCells()) {
 			
 			Board newBoard=new Board(board);
-			levelRole=getCurrRole(level);
+			
 			Move move=cell.cellToMove(levelRole);
 			
 			newBoard.updateBoard(move);
 			
-			if (checkSymmetry(newBoard)) {
-				continue;
-			}
-			
+//			if (checkSymmetry(newBoard)) {
+//				continue;
+//			}
+			System.out.println("BEGIN!!");
+			newBoard.printBoard(System.out);
 			double tmp=minValue(newBoard, alpha, beta,level);
+			System.out.println(tmp);
+			System.out.print("\n\n");
 			if (alpha<tmp) {
 				alpha=tmp;
-				maxi=i;
+				maxCell=cell;
+				System.out.println("CHANGED!!\n");
 			}
 			
 			//pruning
 			if (alpha>=beta) {
 				return beta;
 			}
-			i++;
 		}
 		
 		//set cellToUpdate to max value cell if at the top level
 		if (level==1) {
-			setCellToUpdate(board.getFreeCells().get(maxi));
+			System.out.println("UPDATING!!");
+			setCellToUpdate(maxCell);
 		}
-		
 		return alpha;
 	}
 	
@@ -102,28 +118,28 @@ public class MinimaxAlgorithm extends Intelligence {
 	private double minValue(Board board, double alpha, double beta, int level) {
 		
 		level++;
-		
 		//if current state is in the cut off depth level or has no more successors
 		if (level==depth || board.getFreeCells().size()==0) {
 			
 			HeZhaoSquatterAlgorithm evaluator = new HeZhaoSquatterAlgorithm(board,getMaster());
 			
-			return evaluator.evalFunction();
+			double score=evaluator.evalFunction();
+			
+			return score;
 		}
 		
-		int levelRole;	//role to play in current tree level
+		int levelRole=getMaster().getOppoRole();	//role to play in current tree level
 		
 		for (Cell cell : board.getFreeCells()) {
 			
 			Board newBoard=new Board(board);
-			levelRole=getCurrRole(level);
 			Move move=cell.cellToMove(levelRole);
 			
 			newBoard.updateBoard(move);
 			
-			if (checkSymmetry(newBoard)) {
-				continue;
-			}
+//			if (checkSymmetry(newBoard)) {
+//				continue;
+//			}
 			
 			double tmp=maxValue(newBoard, alpha, beta,level);
 			if (beta>tmp) {
@@ -137,22 +153,9 @@ public class MinimaxAlgorithm extends Intelligence {
 			
 		}
 		
+//		System.out.print("\nEND!!\n");
+		
 		return beta;
-	}
-	
-	/**
-	 *opponent makes the next move if current level is even, 
-	 *else own turn to play
-	 * @param level current tree level
-	 * @return role to play
-	 */
-	private int getCurrRole(int level) {
-		if (level%2==0) {
-			return getMaster().getOppoRole();
-		}
-		else {
-			return getMaster().getRole();
-		}
 	}
 
     /* Return true if a symmetric copy of the specified board has alread been explored.

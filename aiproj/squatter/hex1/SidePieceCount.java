@@ -1,4 +1,4 @@
-package aiproj.squatter;
+package aiproj.squatter.hex1;
 
 public abstract class SidePieceCount extends Feature {
 	

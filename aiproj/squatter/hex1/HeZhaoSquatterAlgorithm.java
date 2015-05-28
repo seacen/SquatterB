@@ -1,4 +1,4 @@
-package aiproj.squatter;
+package aiproj.squatter.hex1;
 
 /**
  * 
@@ -19,7 +19,7 @@ public class HeZhaoSquatterAlgorithm extends LinearEvaluator {
 	public void setFeatures(Board board) {
 		getFeatures()[0] = new OppoCapCount(board,master.getOppoRole());
 		getFeatures()[1] = new OwnCapCount(board,master.getRole());
-		getFeatures()[2] = new OppoSidePieceCount(board,master.getOppoRole());
+		getFeatures()[2] = new AngleCount(board,master.getRole());
 		getFeatures()[3] = new OwnSidePieceCount(board,master.getRole());
 //		getFeatures()[4] = new OppoStepToLoop(board,master.getOppoRole());
 //		getFeatures()[5] = new OwnStepToLoop(board,master.getRole());

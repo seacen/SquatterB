@@ -1,10 +1,10 @@
-package aiproj.squatter;
+package aiproj.squatter.hex1;
 
 public class OwnSidePieceCount extends SidePieceCount {
 
 	public OwnSidePieceCount(Board board, int role) {
 		super(board, role);
-		setWeight(10);
+		setWeight(0);
 	}
 
 }

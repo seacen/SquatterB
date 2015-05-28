@@ -1,4 +1,4 @@
-package aiproj.squatter;
+package aiproj.squatter.hex1;
 /*
  *   Piece:
  *      Define types of states that can appear on a board

@@ -1,4 +1,4 @@
-package aiproj.squatter;
+package aiproj.squatter.hex1;
 
 import java.util.ArrayList;
 import java.util.Random;

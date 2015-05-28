@@ -1,0 +1,84 @@
+1. Class Structure
+
+Xichangz implements player, our player in game.
+
+Xichangz has a board, an instance of Board, a role, an opponent role (oppoRole), a boolean indicating which moving algorithm to use (minimax).
+
+Xichangz implements all methods from given class Player.
+
+***************************************************************************************
+
+Board has a array of arrays of Cell objects, a dimension, a winner, a ArrayList of freeCells.
+
+Board has public methods of updateBoard(Move move), checkWinner(), calculateCaptured(int[] capturedCounts), updateCell(int row, int column, int status), validateMove(int row, int column) and checkLoop().
+
+full descriptions and javadoc please see codes.
+
+*****************************************************************************
+
+Cells consistute a board. has row and column index, a value, and a checked boolean.
+
+has public method cellToMove(int role)
+
+***************************************************************************************
+
+Intelligence has a master, a board it is playing on, a cellToUpdate for the move to be made.
+
+It has an abstract mthod of makeMove() that returns a move.
+
+when player's makeMove() method is called, it instantiates an Intelligence type class to make a move.
+(notes that Intelligence is abstract, only a concrete class of its extension is valid to instantiate.)
+
+***************************************************************************************
+
+RandomAlgorithm extends Intelligence, randomly choose a free cell to make the move. Used for naive moving algorithm.
+
+
+*******************************************************************************************
+
+MinimaxAlgorithm extends Intelligence.
+Has depth indicating the cut off levels, hashsetExplored storing cells that have checked for symmetry
+
+has method extended superclass makemove, which called maxvalue() method.
+
+maxvalue() calls minvalue() in the code and minvalue() calls maxvalue(), the two recursively follow the algorithm to obtain the max value of the minimax tree. When level reachs to the depth, the evaluator is instantiated to calculate an evaluation value.
+
+***********************************************************************************************
+
+LinearEvaluator has featureNum indicating number of features for the evaluator, and a Feature[] array storing features.
+
+has an abstract method setFeatures(), has a concrete method evalFunction(), which linearly add up features times their weights.
+
+***********************************************************************************************
+
+HeZhaoSquatterAlgorithm extends LinearEvaluator, it is our main evaluation algorithm for Minimax tree.
+
+in method setFeatures(), it sets 4 features: opponent's captured count, own captured count, own side pieces count and own angle pieces count.
+
+***********************************************************************************************
+
+Feature has a role it concerns, a value and a weight. Has an abstract method of setFeature()
+
+
+**********************************************************************************************
+
+CapCount extends Feature, a common method of getCaptured() that return specific captured count for its role.
+
+****************************************************************************************************
+
+OwnCapCount extends CapCount, set positive weight.
+
+
+************************************************************************************************
+
+OppoCapCount extends CapCount, set negative weight
+
+
+***********************************************************************************************
+
+SidePieceCount extends Feature, has count that records number of own pieces on 4 sides of the board, has positive weight
+
+*********************************************************************************************
+
+AngleCount extends Feature, has count that records number of own pieces on 4 angle of the board, has negative weight.
+
