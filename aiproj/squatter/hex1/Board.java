@@ -47,8 +47,23 @@ public class Board implements CellStatus{
 		}
 		this.winner=board.getWinner();
         BOARD_HASH_ARRAY = board.getBOARD_HASH_ARRAY();
-		this.freeCells=new ArrayList<Cell>(board.getFreeCells());
+
+        freeCells = new ArrayList<Cell>();
+//        for (Cell c : board.getFreeCells()) {
+//            freeCells.add(new Cell(c));
+//        }
+
+        for (int i=0;i<dimension;i++) {
+            for (int x=0;x<dimension;x++) {
+                if (this.board[i][x].getVal()==EMPTY) {
+                    freeCells.add(this.board[i][x]);
+                }
+            }
+        }
+
+//		this.freeCells=new ArrayList<Cell>(board.getFreeCells());
 	}
+    
 
 	public Board(int n, BufferedReader input, int[][][] boardHashArray) throws NumberFormatException, IOException {
 		
@@ -229,8 +244,22 @@ public class Board implements CellStatus{
 	 * @param status cell status (e.g. BLACK, WHITE, CAPWHITE)
 	 */
 	public void updateCell(int row, int column, int status) {
-		board[row][column].setVal(status);
-		freeCells.remove(board[row][column]);
+        System.out.println("Board before update:");
+        printBoard(System.out);
+        for (Cell c : getFreeCells()) {
+            System.out.println(c);
+        }
+
+        System.out.println("Updating: " + row + " " + column + " " + status);
+
+        System.out.println(freeCells.remove(board[row][column]));
+        board[row][column].setVal(status);
+
+        System.out.println("Board after update:");
+        printBoard(System.out);
+        for (Cell c : getFreeCells()) {
+            System.out.println(c);
+        }
 	}
 	
 	
